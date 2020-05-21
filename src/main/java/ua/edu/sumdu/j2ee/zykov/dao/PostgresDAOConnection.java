@@ -1,12 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.stereotype.Repository;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+@Repository
 public class PostgresDAOConnection extends DAOConnection {
     private final DataSource dataSource;
 

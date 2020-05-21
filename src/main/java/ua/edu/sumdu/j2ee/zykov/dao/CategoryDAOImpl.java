@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
-import org.apache.coyote.http11.filters.IdentityOutputFilter;
+import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 
 import java.sql.Connection;
@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class CategoryDAOImpl implements CategoryDAO {
     private final DAOConnection daoConnection;
     List<Category> categories;
