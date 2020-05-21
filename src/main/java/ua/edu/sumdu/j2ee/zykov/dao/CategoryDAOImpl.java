@@ -47,7 +47,7 @@ public class CategoryDAOImpl implements CategoryDAO {
             daoConnection.getStatement().setString(2, category.getTitle());
             daoConnection.getStatement().setString(3, category.getImageToPath());
             daoConnection.getStatement().setInt(4, category.getId());
-            ((PreparedStatement) daoConnection).execute();
+            daoConnection.getStatement().execute();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
