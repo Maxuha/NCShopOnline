@@ -1,15 +1,16 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public abstract class DAOConnection {
     protected Connection connection;
-    protected Statement statement;
+    protected PreparedStatement statement;
     protected ResultSet resultSet;
 
-    public Statement getStatement() {
+    public PreparedStatement getStatement() {
         return statement;
     }
 
@@ -17,7 +18,7 @@ public abstract class DAOConnection {
         return resultSet;
     }
 
-    public void setStatement(Statement statement) {
+    public void setStatement(PreparedStatement statement) {
         this.statement = statement;
     }
 
