@@ -24,7 +24,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         Connection connection = daoConnection.connect();
         categories = new ArrayList<>();
         try {
-            daoConnection.setStatement(connection.createStatement());
+            daoConnection.setStatement((PreparedStatement) connection.createStatement());
             daoConnection.setResultSet(daoConnection.getStatement().executeQuery("SELECT * FROM category"));
             while (daoConnection.getResultSet().next()) {
                 categories.add(parseCategory(daoConnection.getResultSet()));
@@ -42,11 +42,11 @@ public class CategoryDAOImpl implements CategoryDAO {
     public void create(Category category) {
         Connection connection = daoConnection.connect();
         try {
-            daoConnection.setStatement(connection.prepareStatement("INSERT INTO Category (id, title, path_to_image, parent) VALUES (?, ?, ?, ?)"));
-            ((PreparedStatement) daoConnection.getStatement()).setInt(1, category.getId());
-            ((PreparedStatement) daoConnection.getStatement()).setString(1, category.getTitle());
-            ((PreparedStatement) daoConnection.getStatement()).setString(1, category.getImageToPath());
-            ((PreparedStatement) daoConnection.getStatement()).setInt(1, category.getId());
+            daoConnection.setStatement(connection.prepareStatement("INSERT INTO category (id, title, path_to_image, parent) VALUES (?, ?, ?, ?)"));
+            daoConnection.getStatement().setInt(1, category.getId());
+            daoConnection.getStatement().setString(2, category.getTitle());
+            daoConnection.getStatement().setString(3, category.getImageToPath());
+            daoConnection.getStatement().setInt(4, category.getId());
             ((PreparedStatement) daoConnection).execute();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -61,7 +61,7 @@ public class CategoryDAOImpl implements CategoryDAO {
         try {
             int id = resultSet.getInt("id");
             String title = resultSet.getString("title");
-            String pathToImage = resultSet.getString("image_to_path");
+            String pathToImage = resultSet.getString("path_to_image");
             Integer parentId = resultSet.getInt("parent");
             category = findCategoryByIdFromList(id);
             if (parentId != null) {
