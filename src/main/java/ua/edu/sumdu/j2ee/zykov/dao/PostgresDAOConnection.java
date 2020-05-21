@@ -3,10 +3,7 @@ package ua.edu.sumdu.j2ee.zykov.dao;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Repository
 public class PostgresDAOConnection extends DAOConnection {
@@ -16,11 +13,11 @@ public class PostgresDAOConnection extends DAOConnection {
         this.dataSource = dataSource;
     }
 
-    public Statement getStatement() {
+    public PreparedStatement getStatement() {
         return statement;
     }
 
-    public void setStatement(Statement statement) {
+    public void setStatement(PreparedStatement statement) {
         this.statement = statement;
     }
 
