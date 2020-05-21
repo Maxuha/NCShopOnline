@@ -46,8 +46,12 @@ public class PostgresDAOConnection extends DAOConnection {
     public void disconnect() {
         try {
             connection.close();
-            resultSet.close();
-            statement.close();
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
             System.out.println("Connection was closed!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
