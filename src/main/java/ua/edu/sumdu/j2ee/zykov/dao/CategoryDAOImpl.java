@@ -42,7 +42,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     public void create(Category category) {
         Connection connection = daoConnection.connect();
         try {
-            daoConnection.setStatement(connection.prepareStatement("INSERT INTO category (id, title, path_to_image, parent) VALUES (?, ?, ?, ?)"));
+            daoConnection.setStatement(connection.prepareStatement("INSERT INTO category (title, path_to_image, parent) VALUES (?, ?, ?)"));
             daoConnection.getStatement().setInt(1, category.getId());
             daoConnection.getStatement().setString(2, category.getTitle());
             daoConnection.getStatement().setString(3, category.getImageToPath());
