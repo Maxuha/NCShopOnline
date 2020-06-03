@@ -17,7 +17,7 @@ public class SpringConfig {
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/NCShopOnlineDB");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/ncshoponlinedb");
         dataSource.setUsername("postgres");
         dataSource.setPassword("parolyaNet0");
         dataSource.setDriverClassName("org.postgresql.Driver");
