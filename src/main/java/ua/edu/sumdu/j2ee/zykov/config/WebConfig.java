@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "ua.edu.sumdu.j2ee.zykov.controller")
+@ComponentScan(basePackages = "ua.edu.sumdu.j2ee.zykov")
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public ViewResolver getViewResolver() {
