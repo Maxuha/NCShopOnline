@@ -20,6 +20,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getById(int id) {
+        return categoryDAO.findById(id);
+    }
+
+    @Override
     public void create(Category category) {
         categoryDAO.save(category);
     }
