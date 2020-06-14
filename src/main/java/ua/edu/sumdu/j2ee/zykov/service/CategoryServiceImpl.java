@@ -3,7 +3,6 @@ package ua.edu.sumdu.j2ee.zykov.service;
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.CategoryDAO;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
-
 import java.util.List;
 
 @Service
