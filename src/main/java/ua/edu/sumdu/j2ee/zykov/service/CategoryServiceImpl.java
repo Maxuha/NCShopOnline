@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2ee.zykov.service;
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.CategoryDAO;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -13,7 +14,27 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> getAll() {
+        return categoryDAO.findAll();
+    }
+
+    @Override
+    public Category getById(int id) {
+        return categoryDAO.findById(id);
+    }
+
+    @Override
     public void create(Category category) {
-        categoryDAO.create(category);
+        categoryDAO.save(category);
+    }
+
+    @Override
+    public void update(Category category) {
+        categoryDAO.update(category);
+    }
+
+    @Override
+    public void delete(Category category) {
+        categoryDAO.delete(category);
     }
 }
