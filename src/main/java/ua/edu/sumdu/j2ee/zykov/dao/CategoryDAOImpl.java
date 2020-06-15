@@ -60,22 +60,25 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public void save(Category category) {
+    public Category save(Category category) {
         String query = "INSERT INTO category (title, path_to_image, parent) VALUES (?, ?, ?)";
         Optional<Category> parent = Optional.ofNullable(category.getParent());
         jdbcTemplate.update(query, category.getTitle(), category.getImageToPath(), parent.isPresent() ? parent.get().getId() : null);
+        return category;
     }
 
     @Override
-    public void update(Category category) {
+    public Category update(Category category) {
         String query = "UPDATE category SET title = ?, path_to_image = ?, parent = ? WHERE id = ?";
         Optional<Category> parent = Optional.ofNullable(category.getParent());
         jdbcTemplate.update(query, category.getTitle(), category.getImageToPath(), parent.isPresent() ? parent.get().getId() : null, category.getId());
+        return category;
     }
 
     @Override
-    public void delete(Category category) {
+    public Category delete(Category category) {
         String query = "DELETE FROM category WHERE id = ? ";
         jdbcTemplate.update(query, category.getId());
+        return category;
     }
 }
