@@ -6,8 +6,10 @@ import ua.edu.sumdu.j2ee.zykov.model.Category;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class CategoryMapper implements RowMapper<Category> {
-    Category parent = null;
+    List<Category> categories = new ArrayList<>();
+  
     @Override
     public Category mapRow(ResultSet resultSet, int i) throws SQLException {
         Category category = new Category();
