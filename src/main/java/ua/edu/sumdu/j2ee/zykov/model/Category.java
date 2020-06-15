@@ -9,8 +9,15 @@ public class Category {
     public Category() {
     }
 
-    public Category(int id) {
-        this.id = id;
+    public Category(String title, String imageToPath) {
+        this.title = title;
+        this.imageToPath = imageToPath;
+    }
+
+    public Category(String title, String imageToPath, Category parent) {
+        this.title = title;
+        this.imageToPath = imageToPath;
+        this.parent = parent;
     }
 
     public Category(int id, String title, String imageToPath, Category parent) {
