@@ -17,8 +17,6 @@ public class CategoryController {
 
     @RequestMapping("/create")
     public String createCategory() {
-        Category category = new Category(1, "Notebook", "Some description", null);
-        categoryService.create(category);
         return "categories";
     }
 
