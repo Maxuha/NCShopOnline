@@ -1,7 +1,7 @@
 package ua.edu.sumdu.j2ee.zykov.model;
 
 public class Shipper {
-    private int id;
+    private User user;
     private String companyName;
 
     public Shipper() {
@@ -11,12 +11,12 @@ public class Shipper {
         this.companyName = companyName;
     }
 
-    public int getId() {
-        return id;
+    public User getUser() {
+        return user;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCompanyName() {
