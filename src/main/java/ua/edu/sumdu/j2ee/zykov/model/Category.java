@@ -3,27 +3,27 @@ package ua.edu.sumdu.j2ee.zykov.model;
 public class Category {
     private int id;
     private String title;
-    private String imageToPath;
+    private Image image;
     private Category parent;
 
     public Category() {
     }
 
-    public Category(String title, String imageToPath) {
+    public Category(String title, Image image) {
         this.title = title;
-        this.imageToPath = imageToPath;
+        this.image = image;
     }
 
-    public Category(String title, String imageToPath, Category parent) {
+    public Category(String title, Image image, Category parent) {
         this.title = title;
-        this.imageToPath = imageToPath;
+        this.image = image;
         this.parent = parent;
     }
 
-    public Category(int id, String title, String imageToPath, Category parent) {
+    public Category(int id, String title, Image image, Category parent) {
         this.id = id;
         this.title = title;
-        this.imageToPath = imageToPath;
+        this.image = image;
         this.parent = parent;
     }
 
@@ -43,12 +43,12 @@ public class Category {
         this.title = title;
     }
 
-    public String getImageToPath() {
-        return imageToPath;
+    public Image getImage() {
+        return image;
     }
 
-    public void setImageToPath(String imageToPath) {
-        this.imageToPath = imageToPath;
+    public void setImageToPath(Image image) {
+        this.image = image;
     }
 
     public Category getParent() {

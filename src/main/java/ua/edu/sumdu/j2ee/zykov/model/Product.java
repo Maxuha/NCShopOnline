@@ -4,22 +4,21 @@ public class Product {
     private int id;
     private String title;
     private String description;
-    private String pathToImage;
     private float price;
     private float discount;
     private Category category;
+    private Shipper shipper;
 
     public Product() {
     }
 
-    public Product(int id, String title, String description, String pathToImage, float price, float discount, Category category) {
-        this.id = id;
+    public Product(String title, String description, float price, float discount, Category category, Shipper shipper) {
         this.title = title;
         this.description = description;
-        this.pathToImage = pathToImage;
         this.price = price;
         this.discount = discount;
         this.category = category;
+        this.shipper = shipper;
     }
 
     public float getPrice() {
@@ -70,11 +69,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getPathToImage() {
-        return pathToImage;
+    public Shipper getShipper() {
+        return shipper;
     }
 
-    public void setPathToImage(String pathToImage) {
-        this.pathToImage = pathToImage;
+    public void setShipper(Shipper shipper) {
+        this.shipper = shipper;
     }
 }
