@@ -1,12 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.UserMapper;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public class UserDAOImpl implements UserDAO {
     private final JdbcTemplate jdbcTemplate;
 
