@@ -1,35 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.model;
 
 public class Shipper {
-    private int id;
-    private String title;
     private User user;
-    private Order order;
+    private String companyName;
 
     public Shipper() {
     }
 
-    public Shipper(int id, String title, User user, Order order) {
-        this.id = id;
-        this.title = title;
-        this.user = user;
-        this.order = order;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public Shipper(String companyName) {
+        this.companyName = companyName;
     }
 
     public User getUser() {
@@ -40,11 +19,11 @@ public class Shipper {
         this.user = user;
     }
 
-    public Order getOrder() {
-        return order;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

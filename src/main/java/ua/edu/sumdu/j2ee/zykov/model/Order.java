@@ -1,19 +1,20 @@
 package ua.edu.sumdu.j2ee.zykov.model;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class Order {
     private int id;
-    private int count;
-    private List<Product> products;
+    private boolean isProcessed;
+    private LocalDateTime date;
+    private User user;
 
     public Order() {
     }
 
-    public Order(int id, int count, List<Product> products) {
-        this.id = id;
-        this.count = count;
-        this.products = products;
+    public Order(boolean isProcessed, LocalDateTime date, User user) {
+        this.isProcessed = isProcessed;
+        this.date = date;
+        this.user = user;
     }
 
     public int getId() {
@@ -24,19 +25,27 @@ public class Order {
         this.id = id;
     }
 
-    public int getCount() {
-        return count;
+    public boolean isProcessed() {
+        return isProcessed;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setProcessed(boolean processed) {
+        isProcessed = processed;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
