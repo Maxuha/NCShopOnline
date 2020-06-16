@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.CategoryMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
+import ua.edu.sumdu.j2ee.zykov.model.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +25,18 @@ public class CategoryDAOImpl implements CategoryDAO {
         List<Category> categories = new ArrayList<>();
         for (Category category : mainCategory) {
             query = "WITH RECURSIVE r AS (" +
-                    "    SELECT id, title, path_to_image, parent, 1 AS level" +
+                    "    SELECT id, title, image_id, parent_id" +
                     "    FROM category" +
                     "    WHERE id = ?" +
                     "    UNION" +
-                    "    SELECT category.id, category.title, category.path_to_image, category.parent, r.level + 1 AS level" +
+                    "    SELECT category.id, category.title, category.image_id, category.parent_id" +
                     "    FROM category" +
                     "             JOIN r" +
-                    "                  ON category.parent = r.id" +
+                    "                  ON category.parent_id = r.id" +
                     ")" +
-                    "SELECT * FROM r;";
+                    "SELECT * FROM r " +
+                    "   LEFT JOIN image " +
+                    "       ON r.image_id = image.id;";
             categories.addAll(jdbcTemplate.query(query, new CategoryMapper(), category.getId()));
         }
         return categories;
@@ -42,16 +45,18 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public Category findById(int id) {
         String query = "WITH RECURSIVE r AS (" +
-                "    SELECT id, title, path_to_image, parent, 1 AS level" +
+                "    SELECT id, title, image_id, parent_id" +
                 "    FROM category" +
                 "    WHERE id = ?" +
                 "    UNION" +
-                "    SELECT category.id, category.title, category.path_to_image, category.parent, r.level + 1 AS level" +
+                "    SELECT category.id, category.title, category.image_id, category.parent_id" +
                 "    FROM category" +
                 "             JOIN r" +
-                "                  ON category.id = r.parent" +
+                "                  ON category.id = r.parent_id" +
                 ")" +
-                "SELECT * FROM r;";
+                "SELECT * FROM r" +
+                "   LEFT JOIN image" +
+                "       ON r.image_id = image.id;";
         List<Category> categories = jdbcTemplate.query(query, new CategoryMapper(), id);
         for (int i = 0; i < categories.size() - 1; i++) {
             categories.get(i).setParent(categories.get(i + 1));
@@ -61,17 +66,19 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public Category save(Category category) {
-        String query = "INSERT INTO category (title, path_to_image, parent) VALUES (?, ?, ?)";
+        String query = "INSERT INTO category (title, image_id, parent_id) VALUES (?, ?, ?)";
         Optional<Category> parent = Optional.ofNullable(category.getParent());
-        jdbcTemplate.update(query, category.getTitle(), category.getImage().getPathToImage(), parent.isPresent() ? parent.get().getId() : null);
+        Optional<Image> image = Optional.ofNullable(category.getImage());
+        jdbcTemplate.update(query, category.getTitle(), image.isPresent() ? image.get().getId() : null, parent.isPresent() ? parent.get().getId() : null);
         return category;
     }
 
     @Override
     public Category update(Category category) {
-        String query = "UPDATE category SET title = ?, path_to_image = ?, parent = ? WHERE id = ?";
+        String query = "UPDATE category SET title = ?, image_id = ?, parent_id = ? WHERE id = ?";
         Optional<Category> parent = Optional.ofNullable(category.getParent());
-        jdbcTemplate.update(query, category.getTitle(), category.getImage().getPathToImage(), parent.isPresent() ? parent.get().getId() : null, category.getId());
+        Optional<Image> image = Optional.ofNullable(category.getImage());
+        jdbcTemplate.update(query, category.getTitle(), image.isPresent() ? image.get().getId() : null, parent.isPresent() ? parent.get().getId() : null, category.getId());
         return category;
     }
 
