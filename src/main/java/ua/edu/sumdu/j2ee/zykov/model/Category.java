@@ -47,7 +47,7 @@ public class Category {
         return image;
     }
 
-    public void setImageToPath(Image image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 
