@@ -2,13 +2,13 @@ package ua.edu.sumdu.j2ee.zykov.model;
 
 public class Image {
     private int id;
-    private String pathToImage;
+    private String image;
 
     public Image() {
     }
 
-    public Image(String pathToImage) {
-        this.pathToImage = pathToImage;
+    public Image(String image) {
+        this.image = image;
     }
 
     public int getId() {
@@ -19,11 +19,11 @@ public class Image {
         this.id = id;
     }
 
-    public String getPathToImage() {
-        return pathToImage;
+    public String getImage() {
+        return image;
     }
 
-    public void setPathToImage(String pathToImage) {
-        this.pathToImage = pathToImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 }
