@@ -7,6 +7,11 @@ public class Shipper {
     public Shipper() {
     }
 
+    public Shipper(User user, String companyName) {
+        this.user = user;
+        this.companyName = companyName;
+    }
+
     public Shipper(String companyName) {
         this.companyName = companyName;
     }
