@@ -6,15 +6,15 @@ public class Order {
     private int id;
     private boolean isProcessed;
     private LocalDateTime date;
-    private User user;
+    private Customer customer;
 
     public Order() {
     }
 
-    public Order(boolean isProcessed, LocalDateTime date, User user) {
+    public Order(boolean isProcessed, LocalDateTime date, Customer customer) {
         this.isProcessed = isProcessed;
         this.date = date;
-        this.user = user;
+        this.customer = customer;
     }
 
     public int getId() {
@@ -41,11 +41,11 @@ public class Order {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

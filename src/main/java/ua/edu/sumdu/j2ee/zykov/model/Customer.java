@@ -7,6 +7,11 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(User user, String fullName) {
+        this.user = user;
+        this.fullName = fullName;
+    }
+
     public Customer(String fullName) {
         this.fullName = fullName;
     }
