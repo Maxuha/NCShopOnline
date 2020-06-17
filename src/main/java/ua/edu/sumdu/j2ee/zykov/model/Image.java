@@ -7,6 +7,11 @@ public class Image {
     public Image() {
     }
 
+    public Image(int id, String image) {
+        this.id = id;
+        this.image = image;
+    }
+
     public Image(String image) {
         this.image = image;
     }
