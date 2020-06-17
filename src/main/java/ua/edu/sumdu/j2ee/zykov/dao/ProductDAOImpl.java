@@ -1,13 +1,13 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.ProductMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
 
 import java.util.List;
 
-@Service
+@Repository
 public class ProductDAOImpl implements ProductDAO {
     private final JdbcTemplate jdbcTemplate;
 
