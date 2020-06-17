@@ -12,6 +12,16 @@ public class Product {
     public Product() {
     }
 
+    public Product(int id, String title, String description, float price, float discount, Category category, Shipper shipper) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.discount = discount;
+        this.category = category;
+        this.shipper = shipper;
+    }
+
     public Product(String title, String description, float price, float discount, Category category, Shipper shipper) {
         this.title = title;
         this.description = description;
