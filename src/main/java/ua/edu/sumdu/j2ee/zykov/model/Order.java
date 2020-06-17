@@ -11,6 +11,13 @@ public class Order {
     public Order() {
     }
 
+    public Order(int id, boolean isProcessed, LocalDateTime date, Customer customer) {
+        this.id = id;
+        this.isProcessed = isProcessed;
+        this.date = date;
+        this.customer = customer;
+    }
+
     public Order(boolean isProcessed, LocalDateTime date, Customer customer) {
         this.isProcessed = isProcessed;
         this.date = date;
