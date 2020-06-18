@@ -1,11 +1,13 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.ProductHasOrderMapper;
 import ua.edu.sumdu.j2ee.zykov.model.ProductHasOrder;
 
 import java.util.List;
 
+@Repository
 public class ProductHasOrderDAOImpl implements ProductHasOrderDAO {
     private final JdbcTemplate jdbcTemplate;
 
