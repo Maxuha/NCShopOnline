@@ -2,7 +2,6 @@ package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.edu.sumdu.j2ee.zykov.mapper.CategoryAllMapper;
 import ua.edu.sumdu.j2ee.zykov.mapper.CategoryMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
@@ -21,7 +20,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> findAll() {
-        String query = "SELECT * FROM category WHERE parent_id is null";
+        String query = "SELECT * FROM category LEFT JOIN image ON image.id = category.image_id WHERE parent_id is null;";
         List<Category> mainCategory = jdbcTemplate.query(query, new CategoryMapper());
         List<Category> categories = new ArrayList<>();
         for (Category category : mainCategory) {
@@ -38,7 +37,7 @@ public class CategoryDAOImpl implements CategoryDAO {
                     "SELECT * FROM r " +
                     "   LEFT JOIN image " +
                     "       ON r.image_id = image.id;";
-            categories.addAll(jdbcTemplate.query(query, new CategoryAllMapper(), category.getId()));
+            categories.addAll(jdbcTemplate.query(query, new CategoryMapper(), category.getId()));
         }
         return categories;
     }
@@ -58,7 +57,7 @@ public class CategoryDAOImpl implements CategoryDAO {
                 "SELECT * FROM r" +
                 "   LEFT JOIN image" +
                 "       ON r.image_id = image.id;";
-        List<Category> categories = jdbcTemplate.query(query, new CategoryAllMapper(), id);
+        List<Category> categories = jdbcTemplate.query(query, new CategoryMapper(), id);
         for (int i = 0; i < categories.size() - 1; i++) {
             categories.get(i).setParent(categories.get(i + 1));
         }
