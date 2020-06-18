@@ -21,8 +21,8 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> findAll() {
-        String query = "SELECT * FROM category WHERE parent_id is null";
-        List<Category> mainCategory = jdbcTemplate.query(query, new CategoryMapper());
+        String query = "SELECT * FROM category LEFT JOIN image ON image.id = category.image_id WHERE parent_id is null;";
+        List<Category> mainCategory = jdbcTemplate.query(query, new CategoryAllMapper());
         List<Category> categories = new ArrayList<>();
         for (Category category : mainCategory) {
             query = "WITH RECURSIVE r AS (" +
