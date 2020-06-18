@@ -8,12 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ImageToProductMapper implements RowMapper<ImageToProduct> {
-    private final JdbcTemplate jdbcTemplate;
-
-    public ImageToProductMapper(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     public ImageToProduct mapRow(ResultSet resultSet, int i) throws SQLException {
         Image imageProduct = new Image();
