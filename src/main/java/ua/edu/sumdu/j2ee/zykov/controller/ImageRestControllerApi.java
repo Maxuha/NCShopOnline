@@ -42,6 +42,7 @@ public class ImageRestControllerApi {
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
     public Image removeImage(@RequestBody Image image) {
         return imageService.deleteImage(image);
     }
