@@ -25,13 +25,13 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findById(int id) {
         String query = "SELECT * FROM \"user\" WHERE id = ?";
-        return (User) jdbcTemplate.queryForObject(query, new UserMapper(), id);
+        return jdbcTemplate.queryForObject(query, new UserMapper(), id);
     }
 
     @Override
     public User findByUserName(String username) {
         String query = "SELECT * FROM \"user\" WHERE username = ?";
-        return (User) jdbcTemplate.queryForObject(query, new UserMapper(), username);
+        return jdbcTemplate.queryForObject(query, new UserMapper(), username);
     }
 
     @Override
