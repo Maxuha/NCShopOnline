@@ -22,7 +22,7 @@ public class OrderMapper implements RowMapper<Order> {
         Order order = new Order();
         order.setId(resultSet.getInt(1));
         order.setProcessed(resultSet.getBoolean(2));
-        order.setDate(resultSet.getDate(3).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        order.setDate(resultSet.getTimestamp(3).toLocalDateTime());
         order.setCustomer(customer);
         return order;
     }
