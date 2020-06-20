@@ -11,40 +11,40 @@ public class ProductHasOrderMapper implements RowMapper<ProductHasOrder> {
     @Override
     public ProductHasOrder mapRow(ResultSet resultSet, int i) throws SQLException {
         User user = new User();
-        user.setId(resultSet.getInt("u.id"));
-        user.setUserName(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("password"));
+        user.setId(resultSet.getInt(15));
+        user.setUserName(resultSet.getString(16));
+        user.setPassword(resultSet.getString(17));
         Image image = new Image();
-        image.setId(resultSet.getInt("i.id"));
-        image.setImage(resultSet.getString("image"));
+        image.setId(resultSet.getInt(22));
+        image.setImage(resultSet.getString(23));
         Category category = new Category();
-        category.setId(resultSet.getInt("c.id"));
-        category.setTitle(resultSet.getString("c.title"));
+        category.setId(resultSet.getInt(18));
+        category.setTitle(resultSet.getString(19));
         category.setImage(image);
         category.setParent(null);
         Shipper shipper = new Shipper();
         shipper.setUser(user);
-        shipper.setCompanyName(resultSet.getString("company_name"));
+        shipper.setCompanyName(resultSet.getString(25));
         Product product = new Product();
-        product.setId(resultSet.getInt("p.id"));
-        product.setTitle(resultSet.getString("p.title"));
-        product.setDescription(resultSet.getString("description"));
-        product.setPrice(resultSet.getFloat("price"));
-        product.setDiscount(resultSet.getFloat("discount"));
+        product.setId(resultSet.getInt(8));
+        product.setTitle(resultSet.getString(9));
+        product.setDescription(resultSet.getString(10));
+        product.setPrice(resultSet.getFloat(11));
+        product.setDiscount(resultSet.getFloat(12));
         product.setCategory(category);
         product.setShipper(shipper);
         Customer customer = new Customer();
         customer.setUser(user);
-        customer.setFullName(resultSet.getString("full_name"));
+        customer.setFullName(resultSet.getString(27));
         Order order = new Order();
-        order.setId(resultSet.getInt("o.id"));
-        order.setProcessed(resultSet.getBoolean("is_processed"));
-        order.setDate(resultSet.getDate("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        order.setId(resultSet.getInt(4));
+        order.setProcessed(resultSet.getBoolean(5));
+        order.setDate(resultSet.getDate(6).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         order.setCustomer(customer);
         ProductHasOrder productHasOrder = new ProductHasOrder();
         productHasOrder.setProduct(product);
         productHasOrder.setOrder(order);
-        productHasOrder.setCount(resultSet.getInt("count"));
+        productHasOrder.setCount(resultSet.getInt(3));
         return productHasOrder;
     }
 }

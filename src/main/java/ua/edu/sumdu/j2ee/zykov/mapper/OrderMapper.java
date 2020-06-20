@@ -13,16 +13,16 @@ public class OrderMapper implements RowMapper<Order> {
     @Override
     public Order mapRow(ResultSet resultSet, int i) throws SQLException {
         User user = new User();
-        user.setId(resultSet.getInt("u.id"));
-        user.setUserName(resultSet.getString("username"));
-        user.setPassword(resultSet.getString("password"));
+        user.setId(resultSet.getInt(7));
+        user.setUserName(resultSet.getString(8));
+        user.setPassword(resultSet.getString(9));
         Customer customer = new Customer();
         customer.setUser(user);
-        customer.setFullName(resultSet.getString("full_name"));
+        customer.setFullName(resultSet.getString(6));
         Order order = new Order();
-        order.setId(resultSet.getInt("o.id"));
-        order.setProcessed(resultSet.getBoolean("is_processed"));
-        order.setDate(resultSet.getDate("date").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        order.setId(resultSet.getInt(1));
+        order.setProcessed(resultSet.getBoolean(2));
+        order.setDate(resultSet.getDate(3).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         order.setCustomer(customer);
         return order;
     }
