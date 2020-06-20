@@ -7,9 +7,9 @@ import ua.edu.sumdu.j2ee.zykov.model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapper implements RowMapper {
+public class UserMapper implements RowMapper<User> {
     @Override
-    public Object mapRow(ResultSet resultSet, int i) throws SQLException {
+    public User mapRow(ResultSet resultSet, int i) throws SQLException {
         User user = new User();
         user.setId(resultSet.getInt("id"));
         user.setUserName(resultSet.getString("username"));
