@@ -23,7 +23,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order findById(int id) {
-        String sql = "SELECT * FROM \"order\" o LEFT JOIN customer c on o.user_id = c.user_id LEFT JOIN \"user\" u on o.user_id = u.id WHERE id = ?;";
+        String sql = "SELECT * FROM \"order\" o LEFT JOIN customer c on o.user_id = c.user_id LEFT JOIN \"user\" u on o.user_id = u.id WHERE o.id = ?;";
         return jdbcTemplate.queryForObject(sql, new OrderMapper(), id);
     }
 
