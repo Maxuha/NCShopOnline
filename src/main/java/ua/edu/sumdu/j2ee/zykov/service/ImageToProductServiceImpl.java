@@ -1,10 +1,12 @@
 package ua.edu.sumdu.j2ee.zykov.service;
 
+import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.ImageToProductDAO;
 import ua.edu.sumdu.j2ee.zykov.model.ImageToProduct;
 
 import java.util.List;
 
+@Service
 public class ImageToProductServiceImpl implements ImageToProductService {
     private final ImageToProductDAO imageToProductDAO;
 
