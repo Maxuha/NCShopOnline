@@ -56,7 +56,8 @@ public class CategoryDAOImpl implements CategoryDAO {
                 ")" +
                 "SELECT * FROM r" +
                 "   LEFT JOIN image" +
-                "       ON r.image_id = image.id;";
+                "       ON r.image_id = image.id " +
+                "ORDER BY parent_id;";
         List<Category> categories = jdbcTemplate.query(query, new CategoryMapper(), id);
         for (int i = 0; i < categories.size() - 1; i++) {
             categories.get(i).setParent(categories.get(i + 1));
