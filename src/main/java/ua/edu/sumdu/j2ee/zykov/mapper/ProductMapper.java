@@ -27,7 +27,7 @@ public class ProductMapper implements RowMapper<Product> {
         Product product = new Product();
         product.setId(resultSet.getInt(1));
         product.setTitle(resultSet.getString(2));
-        product.setDescription(resultSet.getNString(3));
+        product.setDescription(resultSet.getString(3));
         product.setPrice(resultSet.getFloat(4));
         product.setDiscount(resultSet.getFloat(5));
         product.setCategory(category);
