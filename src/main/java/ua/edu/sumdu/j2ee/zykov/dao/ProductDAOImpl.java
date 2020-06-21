@@ -36,8 +36,8 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public Product update(Product product) {
-        String sql = "UPDATE product SET title = ?, description = ?, price = ?, discount = ?, category_id = ?, shipper_id = ?";
-        jdbcTemplate.update(sql, product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getCategory().getId(), product.getShipper().getUser().getId());
+        String sql = "UPDATE product SET title = ?, description = ?, price = ?, discount = ?, category_id = ?, shipper_id = ? WHERE id = ?";
+        jdbcTemplate.update(sql, product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getCategory().getId(), product.getShipper().getUser().getId(), product.getId());
         return product;
     }
 
