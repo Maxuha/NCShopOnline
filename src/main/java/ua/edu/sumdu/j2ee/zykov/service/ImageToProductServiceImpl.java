@@ -30,8 +30,8 @@ public class ImageToProductServiceImpl implements ImageToProductService {
     }
 
     @Override
-    public ImageToProduct updateImageToProduct(ImageToProduct imageToProduct) {
-        return imageToProductDAO.update(imageToProduct);
+    public ImageToProduct updateImageToProduct(int imageId, ImageToProduct imageToProduct) {
+        return imageToProductDAO.update(imageId, imageToProduct);
     }
 
     @Override

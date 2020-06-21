@@ -35,10 +35,10 @@ public class ImageToProductRestControllerApi {
         return imageToProductService.addImageToProduct(imageToProduct);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/update/{imageId}", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public ImageToProduct updateImageToProduct(@RequestBody ImageToProduct imageToProduct) {
-        return imageToProductService.updateImageToProduct(imageToProduct);
+    public ImageToProduct updateImageToProduct(@PathVariable int imageId, @RequestBody ImageToProduct imageToProduct) {
+        return imageToProductService.updateImageToProduct(imageId, imageToProduct);
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

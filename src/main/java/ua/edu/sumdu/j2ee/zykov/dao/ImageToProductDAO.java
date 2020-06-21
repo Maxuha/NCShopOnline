@@ -8,6 +8,6 @@ public interface ImageToProductDAO {
     List<ImageToProduct> findAll();
     List<ImageToProduct> findByProductId(int productId);
     ImageToProduct save(ImageToProduct imageToProduct);
-    ImageToProduct update(ImageToProduct imageToProduct);
+    ImageToProduct update(int imageId, ImageToProduct imageToProduct);
     ImageToProduct delete(ImageToProduct imageToProduct);
 }
