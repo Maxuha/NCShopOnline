@@ -39,7 +39,7 @@ public class ProductHasOrderMapper implements RowMapper<ProductHasOrder> {
         Order order = new Order();
         order.setId(resultSet.getInt(4));
         order.setProcessed(resultSet.getBoolean(5));
-        order.setDate(resultSet.getDate(6).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        order.setDate(resultSet.getTimestamp(6).toLocalDateTime());
         order.setCustomer(customer);
         ProductHasOrder productHasOrder = new ProductHasOrder();
         productHasOrder.setProduct(product);
