@@ -36,7 +36,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public Customer update(Customer customer) {
-        String sql = "UPDATE customer SET full_name = ? WHERE user_id = ;";
+        String sql = "UPDATE customer SET full_name = ? WHERE user_id = ?;";
         jdbcTemplate.update(sql, customer.getFullName(), customer.getUser().getId());
         return customer;
     }
