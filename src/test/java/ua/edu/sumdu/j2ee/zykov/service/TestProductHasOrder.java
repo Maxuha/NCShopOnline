@@ -108,11 +108,15 @@ public class TestProductHasOrder {
         Product product = new Product(1, "HP", "notebook", 10000, 0, category, shipper);
         Customer customer = new Customer(user, "Maksym Zykov");
         Order order = new Order(3, false, LocalDateTime.now(), customer);
-        when(productHasOrderDAO.findByOrder(3)).thenReturn(new ProductHasOrder(product, order, 1));
         ProductHasOrder productHasOrder = new ProductHasOrder(product, order, 1);
-        assertEquals(product, productHasOrder.getProduct());
-        assertEquals(order, productHasOrder.getOrder());
-        assertEquals(1, productHasOrder.getCount());
+        List<ProductHasOrder> productHasOrders = new ArrayList<>();
+        productHasOrders.add(productHasOrder);
+        when(productHasOrderDAO.findByOrder(1)).thenReturn(productHasOrders);
+        List<ProductHasOrder> productHasOrderAll = productHasOrderService.getProductHasOrderByOrder(1);
+        assertEquals(1, productHasOrderAll.size());
+        assertEquals(product, productHasOrderAll.get(0).getProduct());
+        assertEquals(order, productHasOrderAll.get(0).getOrder());
+        assertEquals(1, productHasOrderAll.get(0).getCount());
     }
 
     @Test
