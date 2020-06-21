@@ -30,7 +30,7 @@ public class ImageDAOImpl implements ImageDAO {
 
     @Override
     public Image save(Image image) {
-        String sql = "INSERT INTO image (image) VALUES (?, ?);";
+        String sql = "INSERT INTO image (image) VALUES (?);";
         jdbcTemplate.update(sql, image.getImage());
         return image;
     }
