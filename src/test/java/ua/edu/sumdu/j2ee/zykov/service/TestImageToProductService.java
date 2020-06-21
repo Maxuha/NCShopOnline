@@ -92,15 +92,15 @@ public class TestImageToProductService {
 
     @Test
     public void when_update_image_to_product_it_should_return_image_to_product() {
-        Image image1 = new Image(1, "image001.png");
+        Image image1 = new Image(1, "image002.png");
         Category category1 = new Category("All", null, null);
         Category category2 = new Category("Notebook", null, category1);
         User user1 = new User(1, "maksym", "parolyaNet0");
         Shipper shipper1 = new Shipper(user1, "NetCracker");
         Product product1 = new Product(1, "HP", "notebook", 10000, 0, category2, shipper1);
         ImageToProduct imageToProduct1 = new ImageToProduct(product1, image1);
-        imageToProductService.updateImageToProduct(imageToProduct1);
-        verify(imageToProductDAO, times(1)).update(imageToProduct1);
+        imageToProductService.updateImageToProduct(1, imageToProduct1);
+        verify(imageToProductDAO, times(1)).update(1, imageToProduct1);
     }
 
     @Test
