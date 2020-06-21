@@ -31,7 +31,7 @@ public class ImageToProductServiceImpl implements ImageToProductService {
 
     @Override
     public ImageToProduct updateImageToProduct(int imageId, ImageToProduct imageToProduct) {
-        return imageToProductDAO.update(imageToProduct);
+        return imageToProductDAO.update(imageId, imageToProduct);
     }
 
     @Override
