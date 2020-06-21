@@ -36,8 +36,8 @@ public class ImageToProductDAOImpl implements ImageToProductDAO {
 
     @Override
     public ImageToProduct update(ImageToProduct imageToProduct) {
-        String sql = "UPDATE image_to_product SET image_id = ? WHERE product_id = ?";
-        jdbcTemplate.update(sql, imageToProduct.getImage().getId(), imageToProduct.getProduct().getId());
+        String sql = "UPDATE image_to_product SET image_id = ? WHERE product_id = ? AND image_id = ?";
+        jdbcTemplate.update(sql, imageToProduct.getImage().getId(), imageToProduct.getProduct().getId(), imageToProduct.getImage().getId());
         return imageToProduct;
     }
 
