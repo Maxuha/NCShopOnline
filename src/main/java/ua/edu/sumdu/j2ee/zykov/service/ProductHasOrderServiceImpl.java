@@ -7,10 +7,10 @@ import ua.edu.sumdu.j2ee.zykov.model.ProductHasOrder;
 import java.util.List;
 
 @Service
-public class ProductHasOrderImpl implements ProductHasOrderService {
+public class ProductHasOrderServiceImpl implements ProductHasOrderService {
     private final ProductHasOrderDAO productHasOrderDAO;
 
-    public ProductHasOrderImpl(ProductHasOrderDAO productHasOrderDAO) {
+    public ProductHasOrderServiceImpl(ProductHasOrderDAO productHasOrderDAO) {
         this.productHasOrderDAO = productHasOrderDAO;
     }
 
@@ -25,7 +25,7 @@ public class ProductHasOrderImpl implements ProductHasOrderService {
     }
 
     @Override
-    public ProductHasOrder getProductHasOrderByOrder(int id) {
+    public List<ProductHasOrder> getProductHasOrderByOrder(int id) {
         return productHasOrderDAO.findByOrder(id);
     }
 
