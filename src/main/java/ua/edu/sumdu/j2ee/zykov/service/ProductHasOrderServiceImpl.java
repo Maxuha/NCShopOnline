@@ -25,7 +25,7 @@ public class ProductHasOrderServiceImpl implements ProductHasOrderService {
     }
 
     @Override
-    public ProductHasOrder getProductHasOrderByOrder(int id) {
+    public List<ProductHasOrder> getProductHasOrderByOrder(int id) {
         return productHasOrderDAO.findByOrder(id);
     }
 

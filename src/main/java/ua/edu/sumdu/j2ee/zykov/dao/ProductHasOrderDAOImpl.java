@@ -34,12 +34,12 @@ public class ProductHasOrderDAOImpl implements ProductHasOrderDAO {
     }
 
     @Override
-    public ProductHasOrder findByOrder(int id) {
+    public List<ProductHasOrder> findByOrder(int id) {
         String sql = "SELECT * FROM product_has_order LEFT JOIN \"order\" o on product_has_order.order_id = o.id" +
                 " LEFT JOIN product p on product_has_order.product_id = p.id LEFT JOIN \"user\" u on o.user_id = u.id" +
                 " LEFT JOIN category c on p.category_id = c.id LEFT JOIN image i on c.image_id = i.id" +
                 " LEFT JOIN shipper s on p.shipper_id = s.user_id LEFT JOIN customer c2 on o.user_id = c2.user_id WHERE o.id = ?;";
-        return jdbcTemplate.queryForObject(sql, new ProductHasOrderMapper(), id);
+        return jdbcTemplate.query(sql, new ProductHasOrderMapper(), id);
     }
 
     @Override
