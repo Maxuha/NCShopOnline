@@ -14,13 +14,13 @@ public class CategoryMapper implements RowMapper<Category> {
     @Override
     public Category mapRow(ResultSet resultSet, int i) throws SQLException {
         Image image = new Image();
-        image.setId(resultSet.getInt("image.id"));
-        image.setImage(resultSet.getString("image.image"));
+        image.setId(resultSet.getInt(5));
+        image.setImage(resultSet.getString(6));
         Category category = new Category();
-        category.setId(resultSet.getInt("r.id"));
-        category.setTitle(resultSet.getString("title"));
+        category.setId(resultSet.getInt(1));
+        category.setTitle(resultSet.getString(2));
         category.setImage(image);
-        int parentId = resultSet.getInt("parent");
+        int parentId = resultSet.getInt(4);
         category.setParent(findParentCategoryByIdFromList(parentId));
         categories.add(category);
         return category;

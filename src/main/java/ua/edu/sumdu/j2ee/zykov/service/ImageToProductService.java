@@ -8,6 +8,6 @@ public interface ImageToProductService {
     List<ImageToProduct> getImageToProductsAll();
     List<ImageToProduct>  getImageToProductsByProductId(int productId);
     ImageToProduct addImageToProduct(ImageToProduct imageToProduct);
-    ImageToProduct updateImageToProduct(ImageToProduct imageToProduct);
+    ImageToProduct updateImageToProduct(int imageId, ImageToProduct imageToProduct);
     ImageToProduct deleteImageToProduct(ImageToProduct imageToProduct);
 }

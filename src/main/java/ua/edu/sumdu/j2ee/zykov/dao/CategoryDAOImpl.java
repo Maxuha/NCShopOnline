@@ -20,7 +20,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> findAll() {
-        String query = "SELECT * FROM category WHERE parent is null";
+        String query = "SELECT * FROM category LEFT JOIN image ON image.id = category.image_id WHERE parent_id is null;";
         List<Category> mainCategory = jdbcTemplate.query(query, new CategoryMapper());
         List<Category> categories = new ArrayList<>();
         for (Category category : mainCategory) {
@@ -56,7 +56,8 @@ public class CategoryDAOImpl implements CategoryDAO {
                 ")" +
                 "SELECT * FROM r" +
                 "   LEFT JOIN image" +
-                "       ON r.image_id = image.id;";
+                "       ON r.image_id = image.id " +
+                "ORDER BY parent_id;";
         List<Category> categories = jdbcTemplate.query(query, new CategoryMapper(), id);
         for (int i = 0; i < categories.size() - 1; i++) {
             categories.get(i).setParent(categories.get(i + 1));

@@ -29,15 +29,15 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public Product save(Product product) {
-        String sql = "INSERT INTO product (id, title, description, price, discount, category_id, shipper_id) VALUES (?, ?, ?, ?, ?, ?, ?);";
-        jdbcTemplate.update(sql, product.getId(), product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getCategory().getId(), product.getShipper().getUser().getId());
+        String sql = "INSERT INTO product (title, description, price, discount, category_id, shipper_id) VALUES (?, ?, ?, ?, ?, ?);";
+        jdbcTemplate.update(sql, product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getCategory().getId(), product.getShipper().getUser().getId());
         return product;
     }
 
     @Override
     public Product update(Product product) {
-        String sql = "UPDATE product SET title = ?, description = ?, price = ?, discount = ?, category_id = ?, shipper_id = ?";
-        jdbcTemplate.update(sql, product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getCategory().getId(), product.getShipper().getUser().getId());
+        String sql = "UPDATE product SET title = ?, description = ?, price = ?, discount = ?, category_id = ?, shipper_id = ? WHERE id = ?";
+        jdbcTemplate.update(sql, product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getCategory().getId(), product.getShipper().getUser().getId(), product.getId());
         return product;
     }
 
