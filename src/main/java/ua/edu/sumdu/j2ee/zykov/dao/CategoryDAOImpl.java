@@ -20,49 +20,16 @@ public class CategoryDAOImpl implements CategoryDAO {
 
     @Override
     public List<Category> findAll() {
-        String query = "SELECT * FROM category LEFT JOIN image ON image.id = category.image_id WHERE parent_id is null;";
-        List<Category> mainCategory = jdbcTemplate.query(query, new CategoryMapper());
-        List<Category> categories = new ArrayList<>();
-        for (Category category : mainCategory) {
-            query = "WITH RECURSIVE r AS (" +
-                    "    SELECT id, title, image_id, parent_id" +
-                    "    FROM category" +
-                    "    WHERE id = ?" +
-                    "    UNION" +
-                    "    SELECT category.id, category.title, category.image_id, category.parent_id" +
-                    "    FROM category" +
-                    "             JOIN r" +
-                    "                  ON category.parent_id = r.id" +
-                    ")" +
-                    "SELECT * FROM r " +
-                    "   LEFT JOIN image " +
-                    "       ON r.image_id = image.id;";
-            categories.addAll(jdbcTemplate.query(query, new CategoryMapper(), category.getId()));
-        }
+        String query = "SELECT * FROM category LEFT JOIN image ON category.image_id = image.id ORDER BY category.id";
+        List<Category> categories = jdbcTemplate.query(query, new CategoryMapper());
         return categories;
     }
 
     @Override
     public Category findById(int id) {
-        String query = "WITH RECURSIVE r AS (" +
-                "    SELECT id, title, image_id, parent_id" +
-                "    FROM category" +
-                "    WHERE id = ?" +
-                "    UNION" +
-                "    SELECT category.id, category.title, category.image_id, category.parent_id" +
-                "    FROM category" +
-                "             JOIN r" +
-                "                  ON category.id = r.parent_id" +
-                ")" +
-                "SELECT * FROM r" +
-                "   LEFT JOIN image" +
-                "       ON r.image_id = image.id " +
-                "ORDER BY parent_id;";
-        List<Category> categories = jdbcTemplate.query(query, new CategoryMapper(), id);
-        for (int i = 0; i < categories.size() - 1; i++) {
-            categories.get(i).setParent(categories.get(i + 1));
-        }
-        return categories.get(0);
+        String query = "SELECT * FROM category LEFT JOIN image ON category.image_id = image.id ORDER BY category.id";
+        List<Category> categories = jdbcTemplate.query(query, new CategoryMapper());
+        return categories.get(id - 1);
     }
 
     @Override
