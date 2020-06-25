@@ -3,8 +3,10 @@ package ua.edu.sumdu.j2ee.zykov.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
 import ua.edu.sumdu.j2ee.zykov.model.ProductHasOrder;
+import ua.edu.sumdu.j2ee.zykov.service.CategoryService;
 import ua.edu.sumdu.j2ee.zykov.service.ProductHasOrderService;
 
 import java.util.List;
@@ -13,27 +15,32 @@ import java.util.List;
 @RequestMapping("/api/product_has_order")
 public class ProductHasOrderRestControllerApi {
     private final ProductHasOrderService productHasOrderService;
+    private final CategoryService categoryService;
 
-    public ProductHasOrderRestControllerApi(ProductHasOrderService productHasOrderService) {
+    public ProductHasOrderRestControllerApi(ProductHasOrderService productHasOrderService, CategoryService categoryService) {
         this.productHasOrderService = productHasOrderService;
+        this.categoryService = categoryService;
     }
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public List<ProductHasOrder> getAllProductHasOrders() {
-        return productHasOrderService.getProductHasOrderAll();
+        List<ProductHasOrder> productHasOrders = productHasOrderService.getProductHasOrderAll();
+        return getProductHasOrders(productHasOrders);
     }
 
     @RequestMapping(value = "/get/by_product/{productId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public List<ProductHasOrder> getByProductIdProductHasOrder(@PathVariable int productId) {
-        return productHasOrderService.getProductHasOrderByProduct(productId);
+        List<ProductHasOrder> productHasOrders = productHasOrderService.getProductHasOrderByProduct(productId);
+        return getProductHasOrders(productHasOrders);
     }
 
     @RequestMapping(value = "/get/by_order/{orderId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public List<ProductHasOrder> getByOrderIdProductHasOrder(@PathVariable int orderId) {
-        return productHasOrderService.getProductHasOrderByOrder(orderId);
+        List<ProductHasOrder> productHasOrders = productHasOrderService.getProductHasOrderByOrder(orderId);
+        return getProductHasOrders(productHasOrders);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -52,5 +59,18 @@ public class ProductHasOrderRestControllerApi {
     @ResponseStatus(HttpStatus.OK)
     public ProductHasOrder deleteProductHasOrder(@RequestBody ProductHasOrder productHasOrder) {
         return productHasOrderService.deleteProductHasOrder(productHasOrder);
+    }
+
+    private List<ProductHasOrder> getProductHasOrders(List<ProductHasOrder> productHasOrders) {
+        Product product;
+        Category category;
+        for (ProductHasOrder productHasOrder : productHasOrders) {
+            product = productHasOrder.getProduct();
+            category = product.getCategory();
+            category = categoryService.getById(category.getId());
+            product.setCategory(category);
+            productHasOrder.setProduct(product);
+        }
+        return productHasOrders;
     }
 }
