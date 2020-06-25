@@ -27,10 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).
                 favorParameter(true).
-                parameterName("format").
+                parameterName("mediaType").
                 ignoreAcceptHeader(true).
                 useJaf(false).
-                defaultContentType(MediaType.APPLICATION_JSON).
+                defaultContentType(MediaType.APPLICATION_XML).
                 mediaType("xml", MediaType.APPLICATION_XML).
                 mediaType("json", MediaType.APPLICATION_JSON);
     }
