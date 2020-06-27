@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS "product" (
 	"id" serial NOT NULL UNIQUE,
 	"title" varchar(255) NOT NULL,
 	"description" varchar(2048),
-	"price" numeric(8, 2) NOT NULL,
-	"discount" numeric(3, 2),
+	"price" real NOT NULL,
+	"discount" integer,
 	"category_id" integer NOT NULL,
 	"shipper_id" integer NOT NULL,
 	CONSTRAINT "product_pk" PRIMARY KEY ("id","category_id")
