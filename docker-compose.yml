@@ -1,0 +1,20 @@
+version: '2'
+services:
+  wls:
+    image: 1221-oradb-medrec:1.0
+    ports:
+      - 7011:7011
+    depends_on:
+      - database
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes_from:
+      - app
+  app:
+    image: 0103229498988273097157/ncshoponline:v.1
+    command: sh -c 'while sleep 3600; do :; done'
+  database:
+    image: "postgres"
+    env_file:
+      - database.env
