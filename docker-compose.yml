@@ -1,0 +1,14 @@
+version: '2'
+services:
+  server:
+    image: 'oracle/weblogic'
+    ports:
+      - '7001:7001/tcp'
+    depends_on:
+      - database
+    environment:
+      - ADMINISTRATION_PORT_ENABLED=false
+  database:
+    image: "postgres"
+    env_file:
+      - database.env

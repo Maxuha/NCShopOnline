@@ -1,2 +1,6 @@
 # Project exclude paths
 /target/
+.idea/
+ncshoponline.iml
+src/main/webapp/WEB-INF/lib/
+src/main/webapp/WEB-INF/static/node_modules
