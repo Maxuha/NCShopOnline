@@ -31,21 +31,21 @@ public class ImageDAOImpl implements ImageDAO {
     @Override
     public Image save(Image image) {
         String sql = "INSERT INTO image (image) VALUES (?);";
-        jdbcTemplate.update(sql, image.getImage());
+        image.setId(jdbcTemplate.update(sql, image.getImage()));
         return image;
     }
 
     @Override
     public Image update(Image image) {
         String sql = "UPDATE image SET image = ? WHERE id = ?;";
-        jdbcTemplate.update(sql, image.getImage(), image.getId());
+        image.setId(jdbcTemplate.update(sql, image.getImage(), image.getId()));
         return image;
     }
 
     @Override
     public Image delete(Image image) {
         String sql = "DELETE FROM image WHERE id = ?";
-        jdbcTemplate.update(sql, image.getId());
+        image.setId(jdbcTemplate.update(sql, image.getId()));
         return image;
     }
 }
