@@ -37,6 +37,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Category category) {
+        Image image = imageDAO.save(category.getImage());
+        category.setImage(image);
         return categoryDAO.update(category);
     }
 
