@@ -33,14 +33,22 @@ public class ImageDAOImpl implements ImageDAO {
 
     @Override
     public Image save(Image image) {
-        String sql = "INSERT INTO image (image) VALUES (?);";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, image.getImage());
-            return ps;
-        }, keyHolder);
-        image.setId((Integer) Objects.requireNonNull(keyHolder.getKeys()).get("id"));
+        String sql = "SELECT * FROM image WHERE image = ?;";
+        List<Image> list = jdbcTemplate.query(sql, new ImageMapper(), image.getImage());
+        if (list.size() == 0) {
+            sql = "INSERT INTO image (image) VALUES (?);";
+            GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+            String finalSql = sql;
+            Image finalImage = image;
+            jdbcTemplate.update(con -> {
+                PreparedStatement ps = con.prepareStatement(finalSql, new String[]{"id"});
+                ps.setString(1, finalImage.getImage());
+                return ps;
+            }, keyHolder);
+            image.setId((Integer) Objects.requireNonNull(keyHolder.getKeys()).get("id"));
+        } else {
+            image = list.get(0);
+        }
         return image;
     }
 
