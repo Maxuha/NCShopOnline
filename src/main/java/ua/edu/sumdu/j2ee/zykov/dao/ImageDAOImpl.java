@@ -1,11 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.ImageMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringTokenizer;
 
 @Repository
@@ -31,21 +34,27 @@ public class ImageDAOImpl implements ImageDAO {
     @Override
     public Image save(Image image) {
         String sql = "INSERT INTO image (image) VALUES (?);";
-        jdbcTemplate.update(sql, image.getImage());
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, image.getImage());
+            return ps;
+        }, keyHolder);
+        image.setId((Integer) Objects.requireNonNull(keyHolder.getKeys()).get("id"));
         return image;
     }
 
     @Override
     public Image update(Image image) {
         String sql = "UPDATE image SET image = ? WHERE id = ?;";
-        jdbcTemplate.update(sql, image.getImage(), image.getId());
+        image.setId(jdbcTemplate.update(sql, image.getImage(), image.getId()));
         return image;
     }
 
     @Override
     public Image delete(Image image) {
         String sql = "DELETE FROM image WHERE id = ?";
-        jdbcTemplate.update(sql, image.getId());
+        image.setId(jdbcTemplate.update(sql, image.getId()));
         return image;
     }
 }
