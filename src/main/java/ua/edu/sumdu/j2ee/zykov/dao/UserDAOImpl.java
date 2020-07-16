@@ -1,12 +1,18 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.UserMapper;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -37,7 +43,20 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User save(User user) {
         String query = "INSERT INTO \"user\" (username, password) VALUES(?, ?)";
-        jdbcTemplate.update(query, user.getUserName(), user.getPassword());
+        GeneratedKeyHolder holder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement statement = null;
+            try {
+                statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                statement.setString(1, user.getUserName());
+                statement.setString(2, user.getPassword());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return statement;
+        }, holder);
+        int primaryKey = Objects.requireNonNull(holder.getKey()).intValue();
+        user.setId(primaryKey);
         return user;
     }
 
