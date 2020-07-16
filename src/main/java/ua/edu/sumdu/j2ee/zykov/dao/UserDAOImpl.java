@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.UserMapper;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,7 +37,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findByUserName(String username) {
         String query = "SELECT * FROM \"user\" WHERE username = ?";
-        return jdbcTemplate.queryForObject(query, new UserMapper(), username);
+        try {
+            return jdbcTemplate.queryForObject(query, new UserMapper(), username);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -55,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
             }
             return statement;
         }, holder);
-        int primaryKey = Objects.requireNonNull(holder.getKey()).intValue();
+        int primaryKey = (int) Objects.requireNonNull(holder.getKeys()).get("id");
         user.setId(primaryKey);
         return user;
     }

@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2ee.zykov.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.UserDAO;
 import ua.edu.sumdu.j2ee.zykov.model.User;
@@ -9,9 +10,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(UserDAO userDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDAO = userDAO;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userDAO.save(user);
     }
 
