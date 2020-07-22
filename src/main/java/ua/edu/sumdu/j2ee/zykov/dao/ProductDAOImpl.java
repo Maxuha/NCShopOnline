@@ -22,6 +22,12 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
+    public List<Product> findByCategoryId(int categoryId) {
+        String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id WHERE product.category_id = ?;";
+        return jdbcTemplate.query(sql, new ProductMapper(), categoryId);
+    }
+
+    @Override
     public Product findById(int id) {
         String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id WHERE product.id = ?;";
         return jdbcTemplate.queryForObject(sql, new ProductMapper(), id);
