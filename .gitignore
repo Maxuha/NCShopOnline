@@ -4,3 +4,10 @@
 ncshoponline.iml
 src/main/webapp/WEB-INF/lib/
 src/main/webapp/WEB-INF/static/node_modules
+src/main/webapp/WEB-INF/view/403.jsp
+src/main/webapp/WEB-INF/view/categories.jsp
+src/main/webapp/WEB-INF/view/login.jsp
+src/main/webapp/WEB-INF/view/logout.jsp
+src/main/webapp/WEB-INF/view/main.jsp
+src/main/webapp/WEB-INF/view/products.jsp
+src/main/webapp/WEB-INF/view/register.jsp

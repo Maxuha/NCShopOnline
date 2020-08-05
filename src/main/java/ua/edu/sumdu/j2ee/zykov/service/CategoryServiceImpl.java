@@ -24,6 +24,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> getByParentId(int parentId) {
+        return categoryDAO.findByParentId(parentId);
+    }
+
+    @Override
     public Category getById(int id) {
         return categoryDAO.findById(id);
     }

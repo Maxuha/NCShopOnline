@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductRestControllerApi {
     private final ProductService productService;
     private final CategoryService categoryService;
@@ -36,6 +37,16 @@ public class ProductRestControllerApi {
         Product product = productService.getProductById(id);
         product.setCategory(categoryService.getById(product.getCategory().getId()));
         return product;
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> getByCategoryId(@RequestParam int categoryId) {
+        List<Product> products = productService.getProductByCategoryId(categoryId);
+        for (Product product : products) {
+            product.setCategory(categoryService.getById(product.getCategory().getId()));
+        }
+        return products;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

@@ -20,6 +20,11 @@ public class CategoryController {
         return "categories";
     }
 
+    @RequestMapping("/products")
+    public String products() {
+        return "products";
+    }
+
     @RequestMapping()
     public String showAllCategories() {
         return "categories";

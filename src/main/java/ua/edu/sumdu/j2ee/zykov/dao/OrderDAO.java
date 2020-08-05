@@ -7,6 +7,7 @@ import java.util.List;
 public interface OrderDAO {
     List<Order> findAll();
     Order findById(int id);
+    Order findByProcessedAndCustomerId(int customerId);
     Order save(Order order);
     Order update(Order order);
     Order delete(Order order);

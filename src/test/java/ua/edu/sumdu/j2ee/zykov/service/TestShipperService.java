@@ -29,7 +29,7 @@ public class TestShipperService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void when_save_shipper_it_should_return_shipper() {
         User user = new User(1, "maksym", "parolyaNet0");
         Shipper shipper = new Shipper(user, "NetCracker");
@@ -78,5 +78,5 @@ public class TestShipperService {
         Shipper shipper = new Shipper(user, "Maksym Zykov");
         shipperService.deleteShipper(shipper);
         verify(shipperDAO, times(1)).delete(shipper);
-    }
+    }*/
 }

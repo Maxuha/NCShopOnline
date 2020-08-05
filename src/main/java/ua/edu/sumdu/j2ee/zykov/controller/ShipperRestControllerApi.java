@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shipper")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ShipperRestControllerApi {
     private final ShipperService shipperService;
 
@@ -32,7 +33,6 @@ public class ShipperRestControllerApi {
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public Shipper createShipper(@RequestBody Shipper shipper) {
-        System.out.println(shipper.getUser().getId());
         return shipperService.addShipper(shipper);
     }
 

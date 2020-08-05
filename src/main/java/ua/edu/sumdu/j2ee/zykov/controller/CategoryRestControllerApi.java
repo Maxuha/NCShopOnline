@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/category")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CategoryRestControllerApi {
     private final CategoryService categoryService;
 
@@ -19,35 +20,36 @@ public class CategoryRestControllerApi {
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = "*")
     public List<Category> getAllCategories() {
         return categoryService.getAll();
     }
 
+    @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Category> getCategoriesByParentId(@RequestParam Integer parentId) {
+        return categoryService.getByParentId(parentId);
+    }
+
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = "*")
     public Category getByIdCategory(@PathVariable int id) {
         return categoryService.getById(id);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = "*")
     public Category saveCategory(@RequestBody Category category) {
         return categoryService.addCategory(category);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = "*")
     public Category updateCategory(@RequestBody Category category) {
         return categoryService.updateCategory(category);
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    @CrossOrigin(origins = "*")
     public Category removeCategory(@RequestBody Category category) {
         return categoryService.deleteCategory(category);
     }

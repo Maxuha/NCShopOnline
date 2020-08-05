@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/image_to_product")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ImageToProductRestControllerApi {
     private final ImageToProductService imageToProductService;
     private final CategoryService categoryService;

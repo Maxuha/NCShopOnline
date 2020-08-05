@@ -51,8 +51,8 @@ public class ProductHasOrderDAOImpl implements ProductHasOrderDAO {
 
     @Override
     public ProductHasOrder update(ProductHasOrder productHasOrder) {
-        String sql = "UPDATE product_has_order SET product_id = ?, count = ? WHERE order_id = ?";
-        jdbcTemplate.update(sql, productHasOrder.getProduct().getId(), productHasOrder.getCount(), productHasOrder.getOrder().getId());
+        String sql = "UPDATE product_has_order SET count = ? WHERE order_id = ? AND product_id = ?";
+        jdbcTemplate.update(sql, productHasOrder.getCount(), productHasOrder.getOrder().getId(), productHasOrder.getProduct().getId());
         return productHasOrder;
     }
 

@@ -29,7 +29,7 @@ public class TestProductService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+   /* @Test
     public void when_save_product_it_should_return_product() {
         Image image = new Image(1, "image1.png");
         Category category = new Category("Smartphones", image);
@@ -104,5 +104,5 @@ public class TestProductService {
         Product product = new Product(1, "HP", "notebook", 10000, 0, category, shipper);
         productService.deleteProduct(product);
         verify(productDAO, times(1)).delete(product);
-    }
+    }*/
 }

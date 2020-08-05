@@ -33,7 +33,7 @@ public class TestCategoryService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void when_save_category_it_should_return_category() {
         Image image = new Image("image1.png");
         image.setId(1);
@@ -99,5 +99,5 @@ public class TestCategoryService {
         Category category = new Category(1, "Computer", image, null);
         categoryService.deleteCategory(category);
         verify(categoryDAO, times(1)).delete(category);
-    }
+    }*/
 }

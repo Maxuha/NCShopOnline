@@ -21,8 +21,17 @@ public class CategoryDAOImpl implements CategoryDAO {
     @Override
     public List<Category> findAll() {
         String query = "SELECT * FROM category LEFT JOIN image ON category.image_id = image.id ORDER BY category.id";
-        List<Category> categories = jdbcTemplate.query(query, new CategoryMapper());
-        return categories;
+        return jdbcTemplate.query(query, new CategoryMapper());
+    }
+
+    @Override
+    public List<Category> findByParentId(int parentId) {
+        String isNull = parentId == 0 ? " is null " : " = ? ";
+        String query = "SELECT * FROM category LEFT JOIN image ON category.image_id = image.id WHERE category.parent_id" + isNull + "ORDER BY category.id;";
+        if (parentId == 0) {
+            return jdbcTemplate.query(query, new CategoryMapper());
+        }
+        return jdbcTemplate.query(query, new CategoryMapper(), parentId);
     }
 
     @Override

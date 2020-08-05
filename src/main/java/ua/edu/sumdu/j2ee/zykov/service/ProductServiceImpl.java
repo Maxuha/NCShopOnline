@@ -20,6 +20,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductByCategoryId(int categoryId) {
+        return productDAO.findByCategoryId(categoryId);
+    }
+
+    @Override
     public Product getProductById(int id) {
         return productDAO.findById(id);
     }

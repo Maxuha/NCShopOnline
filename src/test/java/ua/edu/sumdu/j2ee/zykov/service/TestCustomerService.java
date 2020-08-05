@@ -29,7 +29,7 @@ public class TestCustomerService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+   /* @Test
     public void when_save_customer_it_should_return_customer() {
         User user = new User(1, "maksym", "parolyaNet0");
         Customer customer = new Customer(user, "Maksym Zykov");
@@ -78,5 +78,5 @@ public class TestCustomerService {
         Customer customer = new Customer(user, "Maksym Zykov");
         customerService.deleteUCustomer(customer);
         verify(customerDAO, times(1)).delete(customer);
-    }
+    }*/
 }
