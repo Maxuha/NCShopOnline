@@ -28,7 +28,7 @@ public class TestProductHasOrder {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void when_save_product_has_order_it_should_return_product_has_order() {
         Image image = new Image(1, "image1.png");
         Category category = new Category("Smartphones", image);
@@ -143,5 +143,5 @@ public class TestProductHasOrder {
         ProductHasOrder productHasOrder = new ProductHasOrder(product, order, 1);
         productHasOrderService.deleteProductHasOrder(productHasOrder);
         verify(productHasOrderDAO, times(1)).delete(productHasOrder);
-    }
+    }*/
 }

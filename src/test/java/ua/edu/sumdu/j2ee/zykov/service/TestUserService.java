@@ -27,7 +27,7 @@ public class TestUserService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void when_save_user_it_should_return_user() {
         User user = new User("maksym", "parolyaNet0");
         userService.addUser(user);
@@ -77,5 +77,5 @@ public class TestUserService {
         User user = new User(1, "maksym", "parolyaNet0");
         userService.deleteUser(user);
         verify(userDAO, times(1)).delete(user);
-    }
+    }*/
 }

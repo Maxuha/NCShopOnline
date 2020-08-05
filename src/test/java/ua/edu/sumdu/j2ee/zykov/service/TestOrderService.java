@@ -32,7 +32,7 @@ public class TestOrderService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void when_save_order_it_should_return_order() {
         User user = new User(1, "maksym", "parolyaNet0");
         Customer customer = new Customer(user, "Maksym Zykov");
@@ -95,5 +95,5 @@ public class TestOrderService {
         Order order = new Order(1, false, LocalDateTime.now(), customer);
         orderService.deleteOrder(order);
         verify(orderDAO, times(1)).delete(order);
-    }
+    }*/
 }

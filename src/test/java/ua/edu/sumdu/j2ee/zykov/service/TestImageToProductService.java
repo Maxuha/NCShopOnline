@@ -27,7 +27,7 @@ public class TestImageToProductService {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    /*@Test
     public void when_save_image_to_product_has_order_it_should_return_image_to_product_has_order() {
         Image image = new Image(1, "image1.png");
         Category category = new Category("Smartphones", image);
@@ -114,5 +114,5 @@ public class TestImageToProductService {
         ImageToProduct imageToProduct1 = new ImageToProduct(product1, image1);
         imageToProductService.deleteImageToProduct(imageToProduct1);
         verify(imageToProductDAO, times(1)).delete(imageToProduct1);
-    }
+    }*/
 }

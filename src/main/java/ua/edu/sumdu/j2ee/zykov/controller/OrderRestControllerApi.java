@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderRestControllerApi {
     private final OrderService orderService;
 
@@ -27,6 +28,12 @@ public class OrderRestControllerApi {
     @ResponseStatus(HttpStatus.OK)
     public Order getByIdOrder(@PathVariable int id) {
         return orderService.getOrderById(id);
+    }
+
+    @RequestMapping(value = "/get/processed", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public Order getOrderByProcessedAndCustomerId(@RequestParam int customerId) {
+        return orderService.getOrderByProcessedAndCustomerId(customerId);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

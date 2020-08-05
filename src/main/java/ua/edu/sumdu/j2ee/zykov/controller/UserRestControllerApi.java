@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2ee.zykov.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 import ua.edu.sumdu.j2ee.zykov.service.UserService;
@@ -52,4 +53,5 @@ public class UserRestControllerApi {
     public User removeUser(@RequestBody User user) {
         return userService.deleteUser(user);
     }
+
 }

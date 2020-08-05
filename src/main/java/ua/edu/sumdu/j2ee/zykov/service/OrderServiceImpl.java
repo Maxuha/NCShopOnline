@@ -25,6 +25,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getOrderByProcessedAndCustomerId(int customerId) {
+        return orderDAO.findByProcessedAndCustomerId(customerId);
+    }
+
+    @Override
     public Order addOrder(Order order) {
         return orderDAO.save(order);
     }

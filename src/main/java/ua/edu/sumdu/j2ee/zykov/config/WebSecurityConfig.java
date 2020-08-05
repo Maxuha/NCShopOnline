@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2ee.zykov.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,31 +20,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
-        http.authorizeRequests().antMatchers("/main").access("hasAnyRole('Role_SHIPPER', 'ROLE_CUSTOMER')");
-        http.authorizeRequests().antMatchers("/categories").access("hasRole('ROLE_SHIPPER')");
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-        http.authorizeRequests().and().formLogin()
+    protected void configure(final HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/index*", "/static/**", "/*.js", "/*.json", "/*.ico", "/category").permitAll()
+                .antMatchers("/", "/login", "/logout").permitAll()
+                .antMatchers("/category").access("hasAnyRole('Role_SHIPPER', 'ROLE_CUSTOMER')")
+                .antMatchers("/admin").access("hasRole('ROLE_SHIPPER')")
+                .and().exceptionHandling().accessDeniedPage("/403")
+                .and().formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
-                .loginPage("/login")
-                .defaultSuccessUrl("/main")
+                .loginPage("/index.html")
+                .defaultSuccessUrl("/index.html")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
-
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful")
+                .deleteCookies("JSESSIONID");
     }
 }

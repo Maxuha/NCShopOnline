@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product_has_order")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProductHasOrderRestControllerApi {
     private final ProductHasOrderService productHasOrderService;
     private final CategoryService categoryService;
