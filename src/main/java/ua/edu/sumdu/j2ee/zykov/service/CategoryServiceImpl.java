@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category addCategory(Category category) {
-        Image image = imageDAO.save(category.getImage());
+        Image image = imageDAO.save(category.getImage() != null ? category.getImage() : new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"));
         category.setImage(image);
         return categoryDAO.save(category);
     }
