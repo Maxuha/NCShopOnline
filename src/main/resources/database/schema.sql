@@ -151,5 +151,5 @@ ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk0" FOREIGN KEY
 ALTER TABLE "image_to_product" DROP CONSTRAINT IF EXISTS "image_to_product_fk1";
 ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk1" FOREIGN KEY ("image_id") REFERENCES "image"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-/*INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_SHIPPER');
-INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_CUSTOMER');*/
+INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_SHIPPER');
+INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_CUSTOMER');
