@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 
 
 CREATE TABLE IF NOT EXISTS "customer" (
-                                          "user_id" integer NOT NULL,
+                                          "user_id" integer NOT NULL ,
                                           "full_name" varchar(255) NOT NULL,
                                           CONSTRAINT "customer_pk" PRIMARY KEY ("user_id")
 ) WITH (
@@ -96,32 +96,60 @@ CREATE TABLE IF NOT EXISTS "image_to_product" (
       OIDS=FALSE
     );
 
+
+
+CREATE TABLE IF NOT EXISTS "role" (
+                                                  "id" serial NOT NULL UNIQUE,
+                                                  "name" varchar(16) NOT NULL UNIQUE
+) WITH (
+      OIDS=FALSE
+    );
+
+
+
+
+CREATE TABLE IF NOT EXISTS "user_has_role" (
+						  "id" serial NOT NULL UNIQUE,
+                                                  "user_id" integer NOT NULL,
+                                                  "role_id" integer NOT NULL
+) WITH (
+      OIDS=FALSE
+    );
+
+
+ALTER TABLE "user_has_role" DROP CONSTRAINT IF EXISTS "user_has_role_fk0";
+ALTER TABLE "user_has_role" ADD CONSTRAINT "user_has_role_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
+ALTER TABLE "user_has_role" DROP CONSTRAINT IF EXISTS "user_has_role_fk1";
+ALTER TABLE "user_has_role" ADD CONSTRAINT "user_has_role_fk1" FOREIGN KEY ("role_id") REFERENCES "role"("id");
+
 ALTER TABLE "shipper" DROP CONSTRAINT IF EXISTS "shipper_fk0";
-ALTER TABLE "shipper" ADD CONSTRAINT "shipper_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
+ALTER TABLE "shipper" ADD CONSTRAINT "shipper_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "customer" DROP CONSTRAINT IF EXISTS "customer_fk0";
-ALTER TABLE "customer" ADD CONSTRAINT "customer_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
+ALTER TABLE "customer" ADD CONSTRAINT "customer_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "order" DROP CONSTRAINT IF EXISTS "order_fk0";
-ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("user_id") REFERENCES "customer"("user_id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("user_id") REFERENCES "customer"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "category" DROP CONSTRAINT IF EXISTS "category_fk0";
-ALTER TABLE "category" ADD CONSTRAINT "category_fk0" FOREIGN KEY ("image_id") REFERENCES "image"("id");
+ALTER TABLE "category" ADD CONSTRAINT "category_fk0" FOREIGN KEY ("image_id") REFERENCES "image"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "category" DROP CONSTRAINT IF EXISTS "category_fk1";
-ALTER TABLE "category" ADD CONSTRAINT "category_fk1" FOREIGN KEY ("parent_id") REFERENCES "category"("id");
+ALTER TABLE "category" ADD CONSTRAINT "category_fk1" FOREIGN KEY ("parent_id") REFERENCES "category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "product" DROP CONSTRAINT IF EXISTS "product_fk0";
-ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("category_id") REFERENCES "category"("id");
+ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("category_id") REFERENCES "category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "product" DROP CONSTRAINT IF EXISTS "product_fk1";
-ALTER TABLE "product" ADD CONSTRAINT "product_fk1" FOREIGN KEY ("shipper_id") REFERENCES "shipper"("user_id");
+ALTER TABLE "product" ADD CONSTRAINT "product_fk1" FOREIGN KEY ("shipper_id") REFERENCES "shipper"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "product_has_order" DROP CONSTRAINT IF EXISTS "product_has_order_fk0";
-ALTER TABLE "product_has_order" ADD CONSTRAINT "product_has_order_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("id");
+ALTER TABLE "product_has_order" ADD CONSTRAINT "product_has_order_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "product_has_order" DROP CONSTRAINT IF EXISTS "product_has_order_fk1";
-ALTER TABLE "product_has_order" ADD CONSTRAINT "product_has_order_fk1" FOREIGN KEY ("order_id") REFERENCES "order"("id");
+ALTER TABLE "product_has_order" ADD CONSTRAINT "product_has_order_fk1" FOREIGN KEY ("order_id") REFERENCES "order"("id")  ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "image_to_product" DROP CONSTRAINT IF EXISTS "image_to_product_fk0";
-ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("id");
+ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "image_to_product" DROP CONSTRAINT IF EXISTS "image_to_product_fk1";
-ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk1" FOREIGN KEY ("image_id") REFERENCES "image"("id");
+ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk1" FOREIGN KEY ("image_id") REFERENCES "image"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+/*INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_SHIPPER');
+INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_CUSTOMER');*/
