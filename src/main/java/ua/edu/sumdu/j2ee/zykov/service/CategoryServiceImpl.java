@@ -35,20 +35,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category addCategory(Category category) {
-        Image image = imageDAO.save(category.getImage() != null ? category.getImage() : new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"));
-        category.setImage(image);
-        return categoryDAO.save(category);
+        return categoryDAO.save(getValidCategory(category));
     }
 
     @Override
     public Category updateCategory(Category category) {
-        Image image = imageDAO.save(category.getImage() != null ? category.getImage() : new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"));
-        category.setImage(image);
-        return categoryDAO.update(category);
+        return categoryDAO.update(getValidCategory(category));
     }
 
     @Override
     public Category deleteCategory(Category category) {
         return categoryDAO.delete(category);
+    }
+
+    private Category getValidCategory(Category category) {
+        Image image = imageDAO.save(category.getImage() != null ? category.getImage() : new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"));
+        category.setImage(image);
+        return category;
     }
 }
