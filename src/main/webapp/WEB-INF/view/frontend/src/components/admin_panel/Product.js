@@ -84,7 +84,7 @@ export default class Product extends Component {
         axios.get("http://localhost:7001/api/category/get/all")
             .then(response => response.data)
             .then((data) => {
-                const categories = [...data];
+                /*const categories = [...data];
                 let categoriesNew = [];
                 categories.map((category1) => {
                     let isSuccess = true
@@ -98,8 +98,8 @@ export default class Product extends Component {
                         categoriesNew = [...categoriesNew, category1];
                     }
                     return category1;
-                })
-                this.setState({categories: categoriesNew})
+                })*/
+                this.setState({categories: data})
             });
     }
 
@@ -123,8 +123,8 @@ export default class Product extends Component {
             description: this.state.description,
             price: this.state.price,
             discount: this.state.discount,
-            category: this.state.category,
-            shipper: this.state.shipper
+            category: this.state.category === {} ? this.state.category : this.state.categories[0],
+            shipper: this.state.shipper === {} ? this.state.shipper : this.state.shippers[0]
         };
         axios.post("http://localhost:7001/api/product/create", product)
             .then(response => {
@@ -138,6 +138,12 @@ export default class Product extends Component {
     };
 
     submitImages(productId) {
+        if (this.state.images.length === 0) {
+            const image = {
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"
+            }
+            this.state.images.push(image)
+        }
         this.state.images.map((image) => {
             axios.post("http://localhost:7001/api/image/create", image)
                 .then(response => {
@@ -227,6 +233,7 @@ export default class Product extends Component {
     };
 
     productChangeCategory = event => {
+        console.log("idD: " +  event.target.childNodes[event.target.selectedIndex].id);
         const category = {
             id: event.target.childNodes[event.target.selectedIndex].id,
             title: event.target.childNodes[event.target.selectedIndex].value
