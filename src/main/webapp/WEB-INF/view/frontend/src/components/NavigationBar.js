@@ -14,6 +14,7 @@ export default class NavigationBar extends Component {
                 <Nav className="mr-auto">
                     <Link to={"/category/0"} className="nav-link">Категории</Link>
                 </Nav>
+                <a href="/logout" style={{marginRight: "5px"}}>Выйти</a>
                 <Link style={{marginRight: "5px"}} variant={"primary"} to={"/admin"}>Админ панель</Link>
                 <ShoppingCart />
             </Navbar>
