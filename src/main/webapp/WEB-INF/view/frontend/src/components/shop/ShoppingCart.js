@@ -47,7 +47,7 @@ export default class ShoppingCart extends Component {
 
     changeCount = (target, event) => {
         this.state.orderWithProducts.map(orderWithProduct =>
-            orderWithProduct === target ? orderWithProduct.count = event.target.value : orderWithProduct.count = 1
+            orderWithProduct === target ? orderWithProduct.count = event.target.value : ''
         );
     }
 

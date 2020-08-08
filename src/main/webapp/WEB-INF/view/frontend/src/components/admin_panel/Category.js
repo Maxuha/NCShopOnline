@@ -36,7 +36,7 @@ export default class Category extends Component {
                     this.setState({
                         id: response.data.id,
                         title: response.data.title,
-                        parent: response.data.parent,
+                        parent: response.data.parent === null ? {} : response.data.parent,
                         image: response.data.image
                     });
                 }
@@ -61,8 +61,8 @@ export default class Category extends Component {
         event.preventDefault();
         const category = {
             title: this.state.title,
-            parent: this.state.parent,
-            image: this.state.image
+            parent: this.state.parent.id ? this.state.parent : null,
+            image: this.state.image.image ? this.state.image : null
         };
         axios.post("http://localhost:7001/api/category/create", category)
             .then(response => {
@@ -82,8 +82,8 @@ export default class Category extends Component {
         const category = {
             id: this.state.id,
             title: this.state.title,
-            parent: this.state.parent,
-            image: this.state.image
+            parent: this.state.parent.id ? this.state.parent : null,
+            image: this.state.image.image ? this.state.image : null
         };
         axios.put("http://localhost:7001/api/category/update", category)
             .then(response => {
