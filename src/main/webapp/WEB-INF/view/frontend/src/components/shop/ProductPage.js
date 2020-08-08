@@ -43,7 +43,7 @@ export default class ProductPage extends Component {
         const orderWithProduct = {
             product: this.props.productWithImages[0].product,
             order: order,
-            count: this.props.productWithImages[0].count === 0 ? 1 : this.props.productWithImages[0].count
+            count: 1
         }
         axios.post("http://localhost:7001/api/product_has_order/create", orderWithProduct)
             .then(response => response.data)
@@ -77,13 +77,18 @@ export default class ProductPage extends Component {
             display: "block",
             float: "right"
         }
+        const Shipper = {
+            width: "300px",
+            marginBottom: "5px"
+        }
         const styles = {
             MainImage,
             SecondImages,
             Description,
             Title,
             Price,
-            PriceBlock
+            PriceBlock,
+            Shipper
         }
         return (
             <div>
@@ -92,6 +97,9 @@ export default class ProductPage extends Component {
                 </div>
                 <div style={styles.Description} className="border border-dark bg-dark text-white">
                     <p>{this.props.productWithImages[0].product.description}</p>
+                </div>
+                <div style={styles.Shipper} className="border border-dark bg-dark text-white">
+                    <p><strong>Поставщик: </strong>{this.props.productWithImages[0].product.shipper.companyName}</p>
                 </div>
                 <div style={styles.PriceBlock} className="text-white">
                     {this.props.productWithImages[0].product.discount === 0 ? "" : <p><strike>{this.props.productWithImages[0].product.price}</strike></p>}
