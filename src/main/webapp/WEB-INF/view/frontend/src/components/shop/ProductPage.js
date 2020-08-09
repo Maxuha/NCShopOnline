@@ -102,8 +102,8 @@ export default class ProductPage extends Component {
                     <p><strong>Поставщик: </strong>{this.props.productWithImages[0].product.shipper.companyName}</p>
                 </div>
                 <div style={styles.PriceBlock} className="text-white">
-                    {this.props.productWithImages[0].product.discount === 0 ? "" : <p><strike>{this.props.productWithImages[0].product.price}</strike></p>}
-                    <h4 style={styles.Price}>{this.getPriceWithDiscount(this.props.productWithImages[0].product.price, this.props.productWithImages[0].product.discount)} <strong style={{fontSize: "30pt"}}>грн</strong></h4>
+                    {this.props.productWithImages[0].product.discount === 0 ? "" : <p><strike>{this.props.productWithImages[0].product.price.toFixed(2)}</strike></p>}
+                    <h4 style={styles.Price}>{this.getPriceWithDiscount(this.props.productWithImages[0].product.price, this.props.productWithImages[0].product.discount).toFixed(2)} <strong style={{fontSize: "30pt"}}>грн</strong></h4>
                     <Button size="lg" variant="danger" onClick={this.onBuy.bind(this)}>Купить</Button>
                 </div>
                 <Image style={styles.MainImage} src={this.props.productWithImages[0].image.image} rounded />
