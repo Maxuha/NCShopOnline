@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import {Form, Button} from 'react-bootstrap'
 import axios from "axios";
+import RegisterMessage from "./RegisterMessage";
 
 export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: '', userName: '', info: '', password: ''
+            type: '', userName: '', info: '', password: '', status: ''
         }
     };
 
@@ -30,12 +31,14 @@ export default class Login extends Component {
         const headers = {
             "info": this.state.info
         }
-        axios.post("http://localhost:7001/register/" + this.state.type, user, {headers: headers}).then(response => console.log(response));
+        axios.post("http://localhost:7001/register/" + this.state.type, user, {headers: headers})
+            .then(response => {this.setState({status: response.status}); console.log(response)});
     };
 
     render() {
         return(
             <div>
+                <RegisterMessage status={this.state.status} userName={this.state.userName} type={this.state.type}/>
                 <Form onSubmit={this.sendRegister} method="post">
                     <Form.Group controlId="formBasicLogin">
                         <Form.Label style={{"color":"white"}}>Имя пользователя</Form.Label>
