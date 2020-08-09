@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS "product" (
                                          "id" serial NOT NULL UNIQUE,
                                          "title" varchar(255) NOT NULL,
                                          "description" varchar(2048),
-                                         "price" real NOT NULL,
-                                         "discount" integer,
+                                         "price" numeric(10, 2) NOT NULL,
+                                         "discount" numeric(3, 2),
                                          "category_id" integer NOT NULL,
                                          "shipper_id" integer NOT NULL,
                                          CONSTRAINT "product_pk" PRIMARY KEY ("id","category_id")
@@ -71,8 +71,7 @@ CREATE TABLE IF NOT EXISTS "product" (
 CREATE TABLE IF NOT EXISTS "product_has_order" (
                                                    "product_id" integer NOT NULL,
                                                    "order_id" integer NOT NULL,
-                                                   "count" integer NOT NULL,
-                                                   CONSTRAINT "product_has_order_pk" PRIMARY KEY ("product_id")
+                                                   "count" integer NOT NULL
 ) WITH (
       OIDS=FALSE
     );
@@ -151,5 +150,5 @@ ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk0" FOREIGN KEY
 ALTER TABLE "image_to_product" DROP CONSTRAINT IF EXISTS "image_to_product_fk1";
 ALTER TABLE "image_to_product" ADD CONSTRAINT "image_to_product_fk1" FOREIGN KEY ("image_id") REFERENCES "image"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_SHIPPER');
-INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_CUSTOMER');
+/*INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_SHIPPER');
+INSERT INTO role (id, name) VALUES (DEFAULT, 'ROLE_CUSTOMER');*/
