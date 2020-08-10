@@ -1,8 +1,15 @@
 import React, {Component} from "react";
 
-import {Card, Table, Image, ButtonGroup, Button} from "react-bootstrap";
+import {Card, Table, Image, ButtonGroup, Button, InputGroup, FormControl} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faList, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {
+    faList,
+    faEdit,
+    faTrash,
+    faFastBackward,
+    faStepBackward,
+    faStepForward, faFastForward
+} from "@fortawesome/free-solid-svg-icons";
 import {Link} from 'react-router-dom';
 import axios from "axios";
 import NCSOToast from "../NCSOToast";
@@ -12,7 +19,7 @@ export default class ProductListAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: [], arr: new Map()
+            products: [], arr: new Map(), currentPage: 1, productsPerPage: 5
         };
     }
 
@@ -42,7 +49,59 @@ export default class ProductListAdmin extends Component {
             })
     };
 
+    changePage = event => {
+        this.setState({
+            [event.target.name]: parseInt(event.target.value)
+        })
+    };
+
+    firstPage = () => {
+        if (this.state.currentPage > 1) {
+            this.setState({
+                currentPage: 1
+            });
+        }
+    };
+
+    prevPage = () => {
+        if (this.state.currentPage > 1) {
+            this.setState({
+                currentPage: this.state.currentPage - 1
+            });
+        }
+    };
+
+    lastPage = () => {
+        if (this.state.currentPage < Math.ceil(this.state.products.length / this.state.productsPerPage)) {
+            this.setState({
+                currentPage: Math.ceil(this.state.products.length / this.state.productsPerPage)
+            });
+        }
+    };
+
+    nextPage = () => {
+        if (this.state.currentPage < Math.ceil(this.state.products.length / this.state.productsPerPage)) {
+            this.setState({
+                currentPage: this.state.currentPage + 1
+            });
+        }
+    };
+
     render() {
+        const {products, currentPage, productsPerPage} = this.state;
+        const lastIndex = currentPage * productsPerPage;
+        const firstIndex = lastIndex - productsPerPage;
+        const currentProducts = products.slice(firstIndex, lastIndex);
+        const totalPages = products.length / productsPerPage;
+
+        const pageNumCss = {
+            width: "45px",
+            border: "1px solid #17A2B8",
+            color: "#17A2B8",
+            textAlign: "center",
+            fontWeight: "bold"
+        };
+
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
@@ -65,11 +124,11 @@ export default class ProductListAdmin extends Component {
                             </thead>
                             <tbody>
                             {
-                                this.state.products.length === 0 ?
+                                products.length === 0 ?
                                     <tr align="center">
-                                        <td colSpan="6">{this.state.products.length} Список пуст</td>
+                                        <td colSpan="6">{products.length} Список пуст</td>
                                     </tr> :
-                                    this.state.products.map((product) => (
+                                    currentProducts.map((product) => (
                                         <tr key={product.id}>
                                             <td>
                                                 <Image width="36" height="36" roundedCircle src={this.state.arr.get(product.id) ? this.state.arr.get(product.id)[0].image.image : ''}/> {product.title}
@@ -102,6 +161,37 @@ export default class ProductListAdmin extends Component {
                             </tbody>
                         </Table>
                     </Card.Body>
+                    <Card.Footer>
+                        <div style={{"float": "left"}}>
+                            ShowingPage {currentPage} of {totalPages}
+                        </div>
+                        <div style={{"float": "right"}}>
+                            <InputGroup size="sm">
+                                <InputGroup.Prepend>
+                                    <Button type="button" variant="outline-info" disabled={currentPage === 1}
+                                            onClick={this.firstPage}>
+                                        <FontAwesomeIcon icon={faFastBackward} /> Первая
+                                    </Button>
+                                    <Button type="button" variant="outline-info" disabled={currentPage === 1}
+                                            onClick={this.prevPage}>
+                                        <FontAwesomeIcon icon={faStepBackward} /> Предыдущая
+                                    </Button>
+                                </InputGroup.Prepend>
+                                <FormControl style={pageNumCss} className={"bg-dark"} name="currentPage" value={currentPage}
+                                             onChange={this.changePage}/>
+                                <InputGroup.Append>
+                                    <Button type="button" variant="outline-info" disabled={currentPage === totalPages}
+                                            onClick={this.nextPage}>
+                                        <FontAwesomeIcon icon={faStepForward} /> Следущая
+                                    </Button>
+                                    <Button type="button" variant="outline-info" disabled={currentPage === totalPages}
+                                            onClick={this.lastPage}>
+                                        <FontAwesomeIcon icon={faFastForward} /> Последняя
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </div>
+                    </Card.Footer>
                 </Card>
             </div>
         )
