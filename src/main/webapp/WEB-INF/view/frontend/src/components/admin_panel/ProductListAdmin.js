@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 
+import './Style.css';
 import {Card, Table, Image, ButtonGroup, Button, InputGroup, FormControl} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
@@ -8,7 +9,10 @@ import {
     faTrash,
     faFastBackward,
     faStepBackward,
-    faStepForward, faFastForward
+    faStepForward,
+    faFastForward,
+    faSearch,
+    faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import {Link} from 'react-router-dom';
 import axios from "axios";
@@ -19,12 +23,24 @@ export default class ProductListAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: [], arr: new Map(), currentPage: 1, productsPerPage: 5
+            products: [], arr: new Map(), currentPage: 1, productsPerPage: 5, sortToggle: true, search: ''
         };
     }
 
+    sortData = () => {
+        this.setState(state => ({
+            sortToggle: !state.sortToggle
+        }));
+        this.findAllProducts();
+    }
+
     componentDidMount() {
-        axios.get("http://localhost:7001/api/product/get/all")
+        this.findAllProducts();
+    }
+
+    findAllProducts() {
+        let sortDir = this.state.sortToggle ? "asc" : "desc";
+        axios.get("http://localhost:7001/api/product/get/all?sortBy=price&sortDir=" + sortDir)
             .then(response => response.data)
             .then((data) => {
                 this.setState({products: data})
@@ -87,20 +103,36 @@ export default class ProductListAdmin extends Component {
         }
     };
 
+    searchChange = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    };
+
+    cancelSearch = () => {
+        this.setState({"search": ''});
+        this.findAllProducts();
+    };
+
+    searchData = () => {
+        axios.get("http://localhost:7001/api/product/get/search?searchText=" + this.state.search)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({products: data})
+                this.state.products.map((product) => axios.get("http://localhost:7001/api/image_to_product/get?product_id=" + product.id)
+                    .then(response => response.data)
+                    .then((data) => {
+                        this.setState({arr: this.state.arr.set(product.id, data)});
+                    }));
+            });
+    };
+
     render() {
-        const {products, currentPage, productsPerPage} = this.state;
+        const {products, currentPage, productsPerPage, search} = this.state;
         const lastIndex = currentPage * productsPerPage;
         const firstIndex = lastIndex - productsPerPage;
         const currentProducts = products.slice(firstIndex, lastIndex);
         const totalPages = products.length / productsPerPage;
-
-        const pageNumCss = {
-            width: "45px",
-            border: "1px solid #17A2B8",
-            color: "#17A2B8",
-            textAlign: "center",
-            fontWeight: "bold"
-        };
 
         return (
             <div>
@@ -108,14 +140,33 @@ export default class ProductListAdmin extends Component {
                     <NCSOToast show = {this.state.show} message = {"Товар удален."} type = {"danger"}/>
                 </div>
                 <Card className={"border border-dark bg-dark text-white"}>
-                    <Card.Header><FontAwesomeIcon icon={faList}/> Все товары</Card.Header>
+                    <Card.Header>
+                        <div style={{"float": "left"}}>
+                            <FontAwesomeIcon icon={faList}/> Все товары
+                        </div>
+                        <div style={{"float": "right"}}>
+                            <InputGroup size="sm">
+                                <FormControl placeholder="Поиск" name="search" value={search}
+                                             className={"bg-dark text-white info-border"}
+                                             onChange={this.searchChange}/>
+                                <InputGroup.Append>
+                                    <Button size="sm" variant="outline-info" type="button" onClick={this.searchData}>
+                                        <FontAwesomeIcon icon={faSearch}/>
+                                    </Button>
+                                    <Button size="sm" variant="outline-danger" type="button" onClick={this.cancelSearch}>
+                                        <FontAwesomeIcon icon={faTimes}/>
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </div>
+                    </Card.Header>
                     <Card.Body>
                         <Table bordered hover striped variant="dark">
                             <thead>
                             <tr>
                                 <th>Название</th>
                                 <th>Описание</th>
-                                <th>Цена</th>
+                                <th onClick={this.sortData}>Цена <div className={this.state.sortToggle ? "arrow arrow-down" : "arrow arrow-up"}> </div></th>
                                 <th>Скидка</th>
                                 <th>Категория</th>
                                 <th>Поставщик</th>
@@ -177,7 +228,7 @@ export default class ProductListAdmin extends Component {
                                         <FontAwesomeIcon icon={faStepBackward} /> Предыдущая
                                     </Button>
                                 </InputGroup.Prepend>
-                                <FormControl style={pageNumCss} className={"bg-dark"} name="currentPage" value={currentPage}
+                                <FormControl className={"page-num bg-dark"} name="currentPage" value={currentPage}
                                              onChange={this.changePage}/>
                                 <InputGroup.Append>
                                     <Button type="button" variant="outline-info" disabled={currentPage === totalPages}

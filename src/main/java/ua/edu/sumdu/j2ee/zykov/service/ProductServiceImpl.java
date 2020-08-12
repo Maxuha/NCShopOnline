@@ -15,8 +15,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductAll() {
-        return productDAO.findAll();
+    public List<Product> getProductAll(String sortBy, String sortDir) {
+        return productDAO.findAll(sortBy, sortDir);
+    }
+
+    @Override
+    public List<Product> getProductByTitleOrShipper(String searchText) {
+        return productDAO.findByTitleOrShipper(searchText);
     }
 
     @Override

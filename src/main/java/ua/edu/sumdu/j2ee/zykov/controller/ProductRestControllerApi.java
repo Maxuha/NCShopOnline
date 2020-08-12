@@ -23,8 +23,18 @@ public class ProductRestControllerApi {
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getAllProducts() {
-        List<Product> products = productService.getProductAll();
+    public List<Product> getAllProducts(@RequestParam String sortBy, @RequestParam String sortDir) {
+        List<Product> products = productService.getProductAll(sortBy, sortDir);
+        for (Product product : products) {
+            product.setCategory(categoryService.getById(product.getCategory().getId()));
+        }
+        return products;
+    }
+
+    @RequestMapping(value = "/get/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> getByTitleOrShipper(@RequestParam String searchText) {
+        List<Product> products = productService.getProductByTitleOrShipper(searchText);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }

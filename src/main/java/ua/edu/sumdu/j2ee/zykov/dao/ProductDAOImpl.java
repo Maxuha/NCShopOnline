@@ -21,8 +21,14 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public List<Product> findAll() {
-        String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id;";
+    public List<Product> findAll(String sortBy, String sortDir) {
+        String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id ORDER BY " + sortBy + " " + sortDir + ";";
+        return jdbcTemplate.query(sql, new ProductMapper());
+    }
+
+    @Override
+    public List<Product> findByTitleOrShipper(String searchText) {
+        String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id WHERE product.title LIKE  '" + searchText + "%' OR s.company_name LIKE '" + searchText + "%';";
         return jdbcTemplate.query(sql, new ProductMapper());
     }
 
