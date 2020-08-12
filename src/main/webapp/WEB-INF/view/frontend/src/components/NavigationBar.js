@@ -6,6 +6,39 @@ import ShoppingCart from "./shop/ShoppingCart";
 import axios from "axios";
 
 export default class NavigationBar extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isLogin: false,
+            isCustomer: false
+        }
+    }
+
+    componentDidMount() {
+        this.getUser();
+    }
+
+    getUser() {
+        axios.get("http://localhost:7001/getUser")
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    isLogin: (!!data)
+                })
+                this.getCustomerOrShipper(data);
+            });
+    }
+
+    getCustomerOrShipper(user) {
+        axios.get("http://localhost:7001/api/customer/get/" + user.id)
+            .then(response => response.data)
+            .then((data) => {
+                this.setState({
+                    isCustomer: (!!data)
+                })
+            });
+    }
+
     render() {
         const marginRight = {
             marginRight: "5px"
@@ -18,9 +51,9 @@ export default class NavigationBar extends Component {
                 <Nav className="mr-auto">
                     <Link to={"/category/0"} className="nav-link">Категории</Link>
                 </Nav>
-                <a href="/logout" style={marginRight}>Выйти</a>
-                <Link style={marginRight} variant={"primary"} to={"/admin"}>Админ панель</Link>
-                <ShoppingCart />
+                {this.state.isLogin ? <a href="/logout" style={marginRight}>Выйти</a> : ''}
+                {this.state.isLogin && !this.state.isCustomer ? <Link style={marginRight} variant={"primary"} to={"/admin"}>Админ панель</Link> : ''}
+                {this.state.isCustomer ? <ShoppingCart /> : ''}
             </Navbar>
         );
     }
