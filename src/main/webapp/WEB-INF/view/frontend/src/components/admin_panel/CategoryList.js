@@ -83,14 +83,6 @@ export default class CategoryList extends Component {
         const currentCategories = categories.slice(firstIndex, lastIndex);
         const totalPages = categories.length / categoriesPerPage;
 
-        const pageNumCss = {
-            width: "45px",
-            border: "1px solid #17A2B8",
-            color: "#17A2B8",
-            textAlign: "center",
-            fontWeight: "bold"
-        };
-
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
@@ -150,7 +142,7 @@ export default class CategoryList extends Component {
                                         <FontAwesomeIcon icon={faStepBackward} /> Предыдущая
                                     </Button>
                                 </InputGroup.Prepend>
-                                <FormControl style={pageNumCss} className={"bg-dark"} name="currentPage" value={currentPage}
+                                <FormControl className={"page-num bg-dark"} name="currentPage" value={currentPage}
                                         onChange={this.changePage}/>
                                 <InputGroup.Append>
                                     <Button type="button" variant="outline-info" disabled={currentPage === totalPages}
