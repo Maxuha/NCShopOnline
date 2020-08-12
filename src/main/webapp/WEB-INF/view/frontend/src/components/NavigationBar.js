@@ -36,6 +36,9 @@ export default class NavigationBar extends Component {
                 this.setState({
                     isCustomer: (!!data)
                 })
+                if (data) {
+                    this.getCustomerOrShipper(data);
+                }
             });
     }
 
@@ -49,7 +52,6 @@ export default class NavigationBar extends Component {
                     <p>NC Shop Online</p>
                 </Link>
                 <Nav className="mr-auto">
-                    <Link to={"/category/0"} className="nav-link">Категории</Link>
                 </Nav>
                 {this.state.isLogin ? <a href="/logout" style={marginRight}>Выйти</a> : ''}
                 {this.state.isLogin && !this.state.isCustomer ? <Link style={marginRight} variant={"primary"} to={"/admin"}>Админ панель</Link> : ''}
