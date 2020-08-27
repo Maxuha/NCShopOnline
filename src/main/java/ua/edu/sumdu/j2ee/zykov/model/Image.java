@@ -1,34 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.model;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Image {
     private int id;
+    @NonNull
     private String image;
-
-    public Image() {
-    }
-
-    public Image(int id, String image) {
-        this.id = id;
-        this.image = image;
-    }
-
-    public Image(String image) {
-        this.image = image;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }
