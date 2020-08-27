@@ -8,65 +8,27 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sun.istack.internal.NotNull;
+import lombok.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Order {
     private int id;
+    @NonNull
     private boolean isProcessed;
+    @NotNull
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime date;
+    @NonNull
     private Customer customer;
-
-    public Order() {
-    }
-
-    public Order(int id, boolean isProcessed, LocalDateTime date, Customer customer) {
-        this.id = id;
-        this.isProcessed = isProcessed;
-        this.date = date;
-        this.customer = customer;
-    }
-
-    public Order(boolean isProcessed, LocalDateTime date, Customer customer) {
-        this.isProcessed = isProcessed;
-        this.date = date;
-        this.customer = customer;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public boolean isProcessed() {
-        return isProcessed;
-    }
-
-    public void setProcessed(boolean processed) {
-        isProcessed = processed;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 }
 
 class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
