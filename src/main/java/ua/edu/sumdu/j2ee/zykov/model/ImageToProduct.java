@@ -5,11 +5,8 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class ImageToProduct {
-    @NonNull
     private Product product;
-    @NonNull
     private Image image;
 }
