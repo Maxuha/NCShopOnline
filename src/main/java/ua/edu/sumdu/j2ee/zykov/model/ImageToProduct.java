@@ -1,30 +1,15 @@
 package ua.edu.sumdu.j2ee.zykov.model;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class ImageToProduct {
+    @NonNull
     private Product product;
+    @NonNull
     private Image image;
-
-    public ImageToProduct() {
-    }
-
-    public ImageToProduct(Product product, Image image) {
-        this.product = product;
-        this.image = image;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
 }
