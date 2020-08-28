@@ -18,7 +18,7 @@ export default class ProductPage extends Component {
     }
 
     executeOrder = user => {
-        axios.get("http://localhost:7001/api/order/get/processed?customerId=" + user.id)
+        axios.get(`http://localhost:7001/api/order/get/processed?customerId=${user.id}`)
             .then(response => response.data)
             .then((data) => {
                 data ? this.submitOrderWithProduct(data) : this.submitNewOrder(user)

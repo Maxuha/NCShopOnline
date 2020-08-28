@@ -31,14 +31,14 @@ export default class Login extends Component {
         const headers = {
             "info": this.state.info
         }
-        axios.post("http://localhost:7001/register/" + this.state.type, user, {headers: headers})
-            .then(response => {this.setState({status: response.status}); console.log(response)});
+        axios.post(`http://localhost:7001/register/${this.state.type}`, user, {headers: headers})
+            .then(response => {this.setState({status: response.status})});
     };
 
     render() {
         return(
             <div>
-                <RegisterMessage status={this.state.status} userName={this.state.userName} type={this.state.type}/>
+                <RegisterMessage status={this.state.status} userName={this.state.userName} type={this.state.type} history={this.props.history}/>
                 <Form onSubmit={this.sendRegister} method="post">
                     <Form.Group controlId="formBasicLogin">
                         <Form.Label style={{"color":"white"}}>Имя пользователя</Form.Label>

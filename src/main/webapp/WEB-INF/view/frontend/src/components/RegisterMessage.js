@@ -7,12 +7,11 @@ export default class RegisterMessage extends Component {
     }
 
     OnLogin = () => {
-        return this.props.history.push("/login/" + this.props.type + "?username=" + this.props.userName);
+        return this.props.history.push(`/login/${this.props.type}?username=${this.props.userName}`);
     }
 
     render() {
         const status = this.props.status;
-        console.log(status)
         return (
             <Modal
                 show={!!status}

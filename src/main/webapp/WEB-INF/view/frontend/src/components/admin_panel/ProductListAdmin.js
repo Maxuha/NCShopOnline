@@ -40,11 +40,11 @@ export default class ProductListAdmin extends Component {
 
     findAllProducts() {
         let sortDir = this.state.sortToggle ? "asc" : "desc";
-        axios.get("http://localhost:7001/api/product/get/all?sortBy=price&sortDir=" + sortDir)
+        axios.get(`http://localhost:7001/api/product/get/all?sortBy=price&sortDir=${sortDir}`)
             .then(response => response.data)
             .then((data) => {
                 this.setState({products: data})
-                this.state.products.map((product) => axios.get("http://localhost:7001/api/image_to_product/get?product_id=" + product.id)
+                this.state.products.map((product) => axios.get(`http://localhost:7001/api/image_to_product/get?product_id=${product.id}`)
                     .then(response => response.data)
                     .then((data) => {
                         this.setState({arr: this.state.arr.set(product.id, data)});
@@ -115,11 +115,11 @@ export default class ProductListAdmin extends Component {
     };
 
     searchData = () => {
-        axios.get("http://localhost:7001/api/product/get/search?searchText=" + this.state.search)
+        axios.get(`http://localhost:7001/api/product/get/search?searchText=${this.state.search}`)
             .then(response => response.data)
             .then((data) => {
                 this.setState({products: data})
-                this.state.products.map((product) => axios.get("http://localhost:7001/api/image_to_product/get?product_id=" + product.id)
+                this.state.products.map((product) => axios.get(`http://localhost:7001/api/image_to_product/get?product_id=${product.id}`)
                     .then(response => response.data)
                     .then((data) => {
                         this.setState({arr: this.state.arr.set(product.id, data)});

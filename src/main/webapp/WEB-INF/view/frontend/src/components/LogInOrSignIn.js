@@ -14,8 +14,8 @@ export default class LogInOrSignIn extends Component {
                     <h4>Вы зарегистрированы у нас?</h4>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Link to={"login/" + this.props.type} className="btn btn-sm btn-outline-primary" variant="primary">Да</Link>
-                    <Link to={"register/" + this.props.type} className="btn btn-sm btn-outline-primary" variant="primary">Нет</Link>
+                    <Link to={`login/${this.props.type}`} className="btn btn-sm btn-outline-primary" variant="primary">Да</Link>
+                    <Link to={`register/${this.props.type}`} className="btn btn-sm btn-outline-primary" variant="primary">Нет</Link>
                 </Modal.Footer>
             </Modal>
         )

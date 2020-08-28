@@ -19,7 +19,7 @@ export default class ShoppingCart extends Component {
     }
 
     getOrder(user) {
-        axios.get("http://localhost:7001/api/order/get/processed?customerId=" + user.id)
+        axios.get(`http://localhost:7001/api/order/get/processed?customerId=${user.id}`)
             .then(response => response.data)
             .then((data) => {
                 if (data) {
@@ -31,7 +31,7 @@ export default class ShoppingCart extends Component {
     }
 
     getOrderWithProduct(order) {
-        axios.get("http://localhost:7001/api/product_has_order/get/by_order/" + order.id)
+        axios.get(`http://localhost:7001/api/product_has_order/get/by_order/${order.id}`)
             .then(response => response.data)
             .then((data) => this.setState({orderWithProducts: data}));
     }

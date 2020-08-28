@@ -37,7 +37,7 @@ export default class Product extends Component {
     };
 
     findProductById = (productId) => {
-        axios.get("http://localhost:7001/api/product/get/" + productId)
+        axios.get(`http://localhost:7001/api/product/get/${productId}`)
             .then(response => {
                 if (response.data != null) {
                     this.setState({
@@ -57,7 +57,7 @@ export default class Product extends Component {
     }
 
     findImagesByProductId = (productId) => {
-        axios.get("http://localhost:7001/api/image_to_product/get?product_id=" + productId)
+        axios.get( `http://localhost:7001/api/image_to_product/get?product_id=${productId}`)
             .then(response => {
                 if (response.data != null) {
                     response.data.map((data) => this.findImageById(data.image.id));
@@ -68,7 +68,7 @@ export default class Product extends Component {
     }
 
     findImageById = (imageId) => {
-        axios.get("http://localhost:7001/api/image/get/" + imageId)
+        axios.get(`http://localhost:7001/api/image/get/${imageId}`)
             .then(response => {
                 if (response.data != null) {
                     this.setState({
