@@ -30,7 +30,7 @@ export default class Category extends Component {
     };
 
     findCategoryById = (categoryId) => {
-        axios.get("http://localhost:7001/api/category/get/" + categoryId)
+        axios.get(`http://localhost:7001/api/category/get/${categoryId}`)
             .then(response => {
                 if (response.data != null) {
                     this.setState({
@@ -41,7 +41,7 @@ export default class Category extends Component {
                     });
                 }
             }).catch((error) => {
-            console.error("Error - " + error);
+            console.error(`Error - ${error}`);
         });
     }
 

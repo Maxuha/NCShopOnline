@@ -16,7 +16,7 @@ export default class CategoryPage extends Component {
     }
 
     loadData(id) {
-        axios.get("http://localhost:7001/api/category/get?parentId=" + id)
+        axios.get(`http://localhost:7001/api/category/get?parentId=${id}`)
         .then(response => response.data)
             .then((data) => {
                 this.setState({categories: data});
@@ -27,12 +27,12 @@ export default class CategoryPage extends Component {
     }
 
     showProduct = (id) => {
-        return this.props.history.push("/category/" + id + "/products");
+        return this.props.history.push(`/category/${id}/products`);
     }
 
     selectCategory = (id) => {
         this.loadData(id)
-        return this.props.history.push("/category/" + id);
+        return this.props.history.push(`/category/${id}`);
     };
 
     render() {

@@ -19,7 +19,7 @@ export default class Product extends Component {
                 <Card.Img style={{height: '11rem'}} variant="top" src={this.getPWI() !== null ? this.getPWI()[0].image.image : ''}/>
                 <Card.Body>
                     <Card.Title>{this.getPWI() !== null ? this.getPWI()[0].product.title : ''}</Card.Title>
-                    <Card.Text>{this.getPWI() !== null ? this.getPWI()[0].product.price + ' грн' : ''}</Card.Text>
+                    <Card.Text>{this.getPWI() !== null ? `${this.getPWI()[0].product.price} грн` : ''}</Card.Text>
                 </Card.Body>
             </Card>
         )

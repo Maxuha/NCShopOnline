@@ -30,7 +30,7 @@ export default class NavigationBar extends Component {
     }
 
     getCustomerOrShipper(user) {
-        axios.get("http://localhost:7001/api/customer/get/" + user.id)
+        axios.get(`http://localhost:7001/api/customer/get/${user.id}`)
             .then(response => response.data)
             .then((data) => {
                 this.setState({
