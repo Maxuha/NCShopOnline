@@ -13,5 +13,5 @@ public interface ProductService {
     Product addProduct(Product product);
     Product updateProduct(Product product);
     Product deleteProduct(Product product);
-    ProductList getCountForProduct();
+    ProductList getCountForProduct(int size);
 }

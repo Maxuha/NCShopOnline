@@ -13,5 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductList {
     private List<Product> products;
+    private Integer totalPages;
     private Integer totalElements;
 }

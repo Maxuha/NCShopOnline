@@ -29,21 +29,19 @@ public class ProductRestControllerApi {
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        ProductList productList = productService.getCountForProduct();
+        ProductList productList = productService.getCountForProduct(size);
         productList.setProducts(products);
         return productList;
     }
 
     @RequestMapping(value = "/get/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public ProductList getByTitleOrShipper(@RequestParam String searchText) {
+    public List<Product> getByTitleOrShipper(@RequestParam String searchText) {
         List<Product> products = productService.getProductByTitleOrShipper(searchText);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        ProductList productList = productService.getCountForProduct();
-        productList.setProducts(products);
-        return productList;
+        return products;
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -56,14 +54,12 @@ public class ProductRestControllerApi {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public ProductList getByCategoryId(@RequestParam int categoryId) {
+    public List<Product> getByCategoryId(@RequestParam int categoryId) {
         List<Product> products = productService.getProductByCategoryId(categoryId);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        ProductList productList = productService.getCountForProduct();
-        productList.setProducts(products);
-        return productList;
+        return products;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
