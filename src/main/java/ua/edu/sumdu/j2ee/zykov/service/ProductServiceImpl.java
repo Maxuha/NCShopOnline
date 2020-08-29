@@ -15,8 +15,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductAll(String sortBy, String sortDir) {
-        return productDAO.findAll(sortBy, sortDir);
+    public List<Product> getProductAll(int page, int size, String sortBy, String sortDir) {
+        int toId = (page + 1) * size;
+        int fromId = toId - size + 1;
+        System.out.println(toId + " " + fromId);
+        return productDAO.findAll(fromId, toId, sortBy, sortDir);
     }
 
     @Override
