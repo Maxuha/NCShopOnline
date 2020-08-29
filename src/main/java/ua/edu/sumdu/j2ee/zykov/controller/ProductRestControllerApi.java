@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 import ua.edu.sumdu.j2ee.zykov.service.CategoryService;
 import ua.edu.sumdu.j2ee.zykov.service.ProductService;
 
@@ -23,22 +24,26 @@ public class ProductRestControllerApi {
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getAllProducts(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String sortBy, @RequestParam String sortDir) {
+    public ProductList getAllProducts(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String sortBy, @RequestParam String sortDir) {
         List<Product> products = productService.getProductAll(page, size, sortBy, sortDir);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        return products;
+        ProductList productList = productService.getCountForProduct();
+        productList.setProducts(products);
+        return productList;
     }
 
     @RequestMapping(value = "/get/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getByTitleOrShipper(@RequestParam String searchText) {
+    public ProductList getByTitleOrShipper(@RequestParam String searchText) {
         List<Product> products = productService.getProductByTitleOrShipper(searchText);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        return products;
+        ProductList productList = productService.getCountForProduct();
+        productList.setProducts(products);
+        return productList;
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -51,12 +56,14 @@ public class ProductRestControllerApi {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getByCategoryId(@RequestParam int categoryId) {
+    public ProductList getByCategoryId(@RequestParam int categoryId) {
         List<Product> products = productService.getProductByCategoryId(categoryId);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        return products;
+        ProductList productList = productService.getCountForProduct();
+        productList.setProducts(products);
+        return productList;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

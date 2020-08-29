@@ -4,9 +4,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.ImageMapper;
+import ua.edu.sumdu.j2ee.zykov.mapper.ProductListMapper;
 import ua.edu.sumdu.j2ee.zykov.mapper.ProductMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -74,5 +76,11 @@ public class ProductDAOImpl implements ProductDAO {
         String sql = "DELETE FROM product WHERE id = ?";
         jdbcTemplate.update(sql, product.getId());
         return product;
+    }
+
+    @Override
+    public ProductList getCountForProducts() {
+        String sql = "SELECT count(*) FROM product";
+        return jdbcTemplate.queryForObject(sql, new ProductListMapper());
     }
 }

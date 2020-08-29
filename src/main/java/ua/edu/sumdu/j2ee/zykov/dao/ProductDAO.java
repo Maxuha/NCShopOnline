@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
 import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface ProductDAO {
     Product save(Product product);
     Product update(Product product);
     Product delete(Product product);
+    ProductList getCountForProducts();
 }
