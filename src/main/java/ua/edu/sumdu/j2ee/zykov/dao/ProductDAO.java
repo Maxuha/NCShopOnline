@@ -6,7 +6,7 @@ import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 import java.util.List;
 
 public interface ProductDAO {
-    List<Product> findAll(int fromId, int toId, String sortBy, String dirSort);
+    List<Product> findAll(String sortBy, String dirSort);
     List<Product> findByTitleOrShipper(String searchText);
     List<Product> findByCategoryId(int categoryId);
     Product findById(int id);
