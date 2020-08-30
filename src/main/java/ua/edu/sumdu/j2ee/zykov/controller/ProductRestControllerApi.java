@@ -31,6 +31,7 @@ public class ProductRestControllerApi {
         }
         ProductList productList = productService.getCountForProduct(size);
         productList.setProducts(products);
+        productList.setNumber(page);
         return productList;
     }
 

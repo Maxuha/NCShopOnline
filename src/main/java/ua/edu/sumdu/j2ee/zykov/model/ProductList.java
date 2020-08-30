@@ -15,4 +15,5 @@ public class ProductList {
     private List<Product> products;
     private Integer totalPages;
     private Integer totalElements;
+    private Integer number;
 }

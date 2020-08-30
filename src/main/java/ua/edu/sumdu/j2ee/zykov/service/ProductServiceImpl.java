@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductList getCountForProduct(int size) {
         ProductList productList =  productDAO.getCountForProducts();
-        int totalPages = productList.getTotalElements() / size;
+        int totalPages = (int) Math.ceil(productList.getTotalElements() / (double)size);
         productList.setTotalPages(totalPages);
         return productList;
     }
