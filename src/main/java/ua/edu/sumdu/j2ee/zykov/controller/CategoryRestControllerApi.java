@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
+import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.service.CategoryService;
 
 import java.util.List;
@@ -20,8 +21,12 @@ public class CategoryRestControllerApi {
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Category> getAllCategories() {
-        return categoryService.getAll();
+    public CategoryList getAllCategories(@RequestParam Integer page, @RequestParam Integer size) {
+        List<Category> categories = categoryService.getAll(page, size);
+        CategoryList categoryList = categoryService.getCountForCategory(size);
+        categoryList.setCategories(categories);
+        categoryList.setNumber(page);
+        return categoryList;
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

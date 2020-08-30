@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.CategoryDAO;
 import ua.edu.sumdu.j2ee.zykov.dao.ImageDAO;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
+import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
+import ua.edu.sumdu.j2ee.zykov.model.Product;
 
 import java.util.List;
 
@@ -19,8 +21,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAll() {
-        return categoryDAO.findAll();
+    public List<Category> getAll(int page, int size) {
+        List<Category> categories = categoryDAO.findAll();
+        int from = page * size;
+        int to = from + size;
+        to = Math.min(to, categories.size());
+        return categories.subList(from, to);
     }
 
     @Override
@@ -46,6 +52,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category deleteCategory(Category category) {
         return categoryDAO.delete(category);
+    }
+
+    @Override
+    public CategoryList getCountForCategory(int size) {
+        CategoryList categoryList =  categoryDAO.getCountForCategory();
+        int totalPages = (int) Math.ceil(categoryList.getTotalElements() / (double)size);
+        categoryList.setTotalPages(totalPages);
+        return categoryList;
     }
 
     private Category getValidCategory(Category category) {
