@@ -19,7 +19,6 @@ import axios from "axios";
 import NCSOToast from "../NCSOToast";
 
 export default class ProductListAdmin extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -28,22 +27,23 @@ export default class ProductListAdmin extends Component {
     }
 
     sortData = () => {
-        this.setState(state => ({
-            sortToggle: !state.sortToggle
-        }));
-        this.findAllProducts();
+        this.setState((state) => {
+            return {sortToggle: !state.sortToggle}
+        });
+        this.findAllProducts(this.state.currentPage);
     }
 
     componentDidMount() {
-        this.findAllProducts();
+        this.findAllProducts(this.state.currentPage);
     }
 
-    findAllProducts() {
+    findAllProducts(currentPage) {
         let sortDir = this.state.sortToggle ? "asc" : "desc";
-        axios.get(`http://localhost:7001/api/product/get/all?sortBy=price&sortDir=${sortDir}`)
+        currentPage -= 1;
+        axios.get(`http://localhost:7001/api/product/get/all?page=${currentPage}&size=${this.state.productsPerPage}&sortBy=price&sortDir=${sortDir}`)
             .then(response => response.data)
             .then((data) => {
-                this.setState({products: data})
+                this.setState({products: data.products, totalPages: data.totalPages, totalElements: data.totalElements, currentPage: data.number + 1})
                 this.state.products.map((product) => axios.get(`http://localhost:7001/api/image_to_product/get?product_id=${product.id}`)
                     .then(response => response.data)
                     .then((data) => {
@@ -66,40 +66,37 @@ export default class ProductListAdmin extends Component {
     };
 
     changePage = event => {
+        let targetPage = parseInt(event.target.value)
+        this.findAllProducts(targetPage);
         this.setState({
-            [event.target.name]: parseInt(event.target.value)
+            [event.target.name]: targetPage
         })
     };
 
     firstPage = () => {
-        if (this.state.currentPage > 1) {
-            this.setState({
-                currentPage: 1
-            });
+        let firstPage = 1;
+        if (this.state.currentPage > firstPage) {
+            this.findAllProducts(firstPage);
         }
     };
 
     prevPage = () => {
-        if (this.state.currentPage > 1) {
-            this.setState({
-                currentPage: this.state.currentPage - 1
-            });
+        let prevPage = 1;
+        if (this.state.currentPage > prevPage) {
+            this.findAllProducts(this.state.currentPage - prevPage);
         }
     };
 
     lastPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.products.length / this.state.productsPerPage)) {
-            this.setState({
-                currentPage: Math.ceil(this.state.products.length / this.state.productsPerPage)
-            });
+        let condition = Math.ceil(this.state.totalElements / this.state.productsPerPage);
+        if (this.state.currentPage < condition) {
+            this.findAllProducts(condition);
         }
     };
 
     nextPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.products.length / this.state.productsPerPage)) {
-            this.setState({
-                currentPage: this.state.currentPage + 1
-            });
+        if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.productsPerPage)) {
+            this.findAllProducts(this.state.currentPage + 1);
         }
     };
 
@@ -111,7 +108,7 @@ export default class ProductListAdmin extends Component {
 
     cancelSearch = () => {
         this.setState({"search": ''});
-        this.findAllProducts();
+        this.findAllProducts(this.state.currentPage);
     };
 
     searchData = () => {
@@ -128,12 +125,7 @@ export default class ProductListAdmin extends Component {
     };
 
     render() {
-        const {products, currentPage, productsPerPage, search} = this.state;
-        const lastIndex = currentPage * productsPerPage;
-        const firstIndex = lastIndex - productsPerPage;
-        const currentProducts = products.slice(firstIndex, lastIndex);
-        const totalPages = products.length / productsPerPage;
-
+        const {products, currentPage, totalPages, search} = this.state;
         return (
             <div>
                 <div style={{"display":this.state.show ? "block" : "none"}}>
@@ -179,7 +171,7 @@ export default class ProductListAdmin extends Component {
                                     <tr align="center">
                                         <td colSpan="6">{products.length} Список пуст</td>
                                     </tr> :
-                                    currentProducts.map((product) => (
+                                    products.map((product) => (
                                         <tr key={product.id}>
                                             <td>
                                                 <Image width="36" height="36" roundedCircle src={this.state.arr.get(product.id) ? this.state.arr.get(product.id)[0].image.image : ''}/> {product.title}
