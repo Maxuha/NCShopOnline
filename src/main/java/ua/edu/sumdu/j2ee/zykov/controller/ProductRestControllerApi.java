@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 import ua.edu.sumdu.j2ee.zykov.service.CategoryService;
 import ua.edu.sumdu.j2ee.zykov.service.ProductService;
 
@@ -23,12 +24,15 @@ public class ProductRestControllerApi {
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getAllProducts(@RequestParam String sortBy, @RequestParam String sortDir) {
-        List<Product> products = productService.getProductAll(sortBy, sortDir);
+    public ProductList getAllProducts(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String sortBy, @RequestParam String sortDir) {
+        List<Product> products = productService.getProductAll(page, size, sortBy, sortDir);
         for (Product product : products) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        return products;
+        ProductList productList = productService.getCountForProduct(size);
+        productList.setProducts(products);
+        productList.setNumber(page);
+        return productList;
     }
 
     @RequestMapping(value = "/get/search", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})

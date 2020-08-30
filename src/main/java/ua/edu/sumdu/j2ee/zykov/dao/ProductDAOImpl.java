@@ -4,9 +4,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import ua.edu.sumdu.j2ee.zykov.mapper.ImageMapper;
+import ua.edu.sumdu.j2ee.zykov.mapper.ProductListMapper;
 import ua.edu.sumdu.j2ee.zykov.mapper.ProductMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -22,7 +24,7 @@ public class ProductDAOImpl implements ProductDAO {
 
     @Override
     public List<Product> findAll(String sortBy, String sortDir) {
-        String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id ORDER BY " + sortBy + " " + sortDir + ";";
+        String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id ORDER BY " + sortBy + " " + sortDir;
         return jdbcTemplate.query(sql, new ProductMapper());
     }
 
@@ -74,5 +76,11 @@ public class ProductDAOImpl implements ProductDAO {
         String sql = "DELETE FROM product WHERE id = ?";
         jdbcTemplate.update(sql, product.getId());
         return product;
+    }
+
+    @Override
+    public ProductList getCountForProducts() {
+        String sql = "SELECT count(*) FROM product";
+        return jdbcTemplate.queryForObject(sql, new ProductListMapper());
     }
 }

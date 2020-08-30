@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2ee.zykov.service;
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.ProductDAO;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 
 import java.util.List;
 
@@ -15,8 +16,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProductAll(String sortBy, String sortDir) {
-        return productDAO.findAll(sortBy, sortDir);
+    public List<Product> getProductAll(int page, int size, String sortBy, String sortDir) {
+        List<Product> products = productDAO.findAll(sortBy, sortDir);
+        products.forEach(product -> System.out.println(product.getId()));
+        int from = page * size;
+        int to = from + size;
+        to = Math.min(to, products.size());
+        return products.subList(from, to);
     }
 
     @Override
@@ -47,5 +53,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product deleteProduct(Product product) {
         return productDAO.delete(product);
+    }
+
+    @Override
+    public ProductList getCountForProduct(int size) {
+        ProductList productList =  productDAO.getCountForProducts();
+        int totalPages = (int) Math.ceil(productList.getTotalElements() / (double)size);
+        productList.setTotalPages(totalPages);
+        return productList;
     }
 }

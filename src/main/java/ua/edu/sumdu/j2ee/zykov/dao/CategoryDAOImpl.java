@@ -2,8 +2,10 @@ package ua.edu.sumdu.j2ee.zykov.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ua.edu.sumdu.j2ee.zykov.mapper.CategoryListMapper;
 import ua.edu.sumdu.j2ee.zykov.mapper.CategoryMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
+import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 
 import java.util.ArrayList;
@@ -70,5 +72,11 @@ public class CategoryDAOImpl implements CategoryDAO {
         String query = "DELETE FROM category WHERE id = ? ";
         jdbcTemplate.update(query, category.getId());
         return category;
+    }
+
+    @Override
+    public CategoryList getCountForCategory() {
+        String sql = "SELECT count(*) FROM category";
+        return jdbcTemplate.queryForObject(sql, new CategoryListMapper());
     }
 }

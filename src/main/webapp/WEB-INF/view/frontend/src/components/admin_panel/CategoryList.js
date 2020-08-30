@@ -18,10 +18,15 @@ export default class CategoryList extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:7001/api/category/get/all")
+        this.findAllCategory(this.state.currentPage);
+    }
+
+    findAllCategory(currentPage) {
+        currentPage -= 1;
+        axios.get(`http://localhost:7001/api/category/get/all?page=${currentPage}&size=${this.state.categoriesPerPage}`)
             .then(response => response.data)
             .then((data) => {
-                this.setState({categories: data})
+                this.setState({categories: data.categories, totalPages: data.totalPages, totalElements: data.totalElements, currentPage: data.number + 1})
             });
     }
 
@@ -39,49 +44,42 @@ export default class CategoryList extends Component {
     };
 
     changePage = event => {
+        let targetPage = parseInt(event.target.value)
+        this.findAllCategory(targetPage);
         this.setState({
-            [event.target.name]: parseInt(event.target.value)
+            [event.target.name]: targetPage
         })
     };
 
     firstPage = () => {
-        if (this.state.currentPage > 1) {
-            this.setState({
-                currentPage: 1
-            });
+        let firstPage = 1;
+        if (this.state.currentPage > firstPage) {
+            this.findAllCategory(firstPage);
         }
     };
 
     prevPage = () => {
-        if (this.state.currentPage > 1) {
-            this.setState({
-                currentPage: this.state.currentPage - 1
-            });
+        let prevPage = 1;
+        if (this.state.currentPage > prevPage) {
+            this.findAllCategory(this.state.currentPage - prevPage);
         }
     };
 
     lastPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.categories.length / this.state.categoriesPerPage)) {
-            this.setState({
-                currentPage: Math.ceil(this.state.categories.length / this.state.categoriesPerPage)
-            });
+        let condition = Math.ceil(this.state.totalElements / this.state.categoriesPerPage);
+        if (this.state.currentPage < condition) {
+            this.findAllCategory(condition);
         }
     };
 
     nextPage = () => {
-        if (this.state.currentPage < Math.ceil(this.state.categories.length / this.state.categoriesPerPage)) {
-            this.setState({
-                currentPage: this.state.currentPage + 1
-            });
+        if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.categoriesPerPage)) {
+            this.findAllCategory(this.state.currentPage + 1);
         }
     };
 
     render() {
-        const {categories, currentPage, categoriesPerPage} = this.state;
-        const lastIndex = currentPage * categoriesPerPage;
-        const firstIndex = lastIndex - categoriesPerPage;
-        const currentCategories = categories.slice(firstIndex, lastIndex);
-        const totalPages = categories.length / categoriesPerPage;
+        const {categories, currentPage, totalPages} = this.state;
 
         return (
             <div>
@@ -105,7 +103,7 @@ export default class CategoryList extends Component {
                                     <tr align="center">
                                         <td colSpan="6">{categories.length} Список пуст</td>
                                     </tr> :
-                                    currentCategories.map((category) => (
+                                    categories.map((category) => (
                                         <tr key={category.id}>
                                             <td>
                                                 <Image src={category.image !== null ? category.image.image : ""} roundedCircle width="25" height="25"/> {category.title}
