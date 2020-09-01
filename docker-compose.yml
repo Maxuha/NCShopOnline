@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   server:
     image: 'oracle/weblogic'
@@ -10,5 +10,7 @@ services:
       - ADMINISTRATION_PORT_ENABLED=false
   database:
     image: "postgres"
+    ports:
+      - '5555:5432'
     env_file:
       - database.env

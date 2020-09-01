@@ -10,7 +10,4 @@ RUN mkdir -p $DEPLOY_DIR && \
     mkdir -p $DOMAIN_HOME/config/jdbc
 COPY src/main/webapp/WEB-INF/lib/postgresql-42.2.5.jar $DOMAIN_HOME/lib/postgresql-42.2.5.jar
 COPY domain.properties /u01/oracle/properties/
-COPY target/ncshoponline-1.0-SNAPSHOT.war $DEPLOY_DIR/ncshoponline-1.0-SNAPSHOT.war
-COPY src/main/webapp/WEB-INF/lib/NCShopOnlineDB-1060-jdbc.xml $DOMAIN_HOME/config/jdbc/NCShopOnlineDB-1060-jdbc.xml
-RUN chmod 777 $DOMAIN_HOME/config && \
-    chown oracle:oracle $DOMAIN_HOME/config
+COPY target/ncshoponline.war $DEPLOY_DIR/ncshoponline.war
