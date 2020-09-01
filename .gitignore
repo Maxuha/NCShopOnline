@@ -2,7 +2,6 @@
 /target/
 .idea/
 ncshoponline.iml
-src/main/webapp/WEB-INF/lib/
 src/main/webapp/WEB-INF/static/node_modules
 src/main/webapp/WEB-INF/view/403.jsp
 src/main/webapp/WEB-INF/view/categories.jsp
