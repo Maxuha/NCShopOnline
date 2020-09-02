@@ -23,7 +23,7 @@ export default class CategoryList extends Component {
 
     findAllCategory(currentPage) {
         currentPage -= 1;
-        axios.get(`http://localhost:7001/api/category/get/all?page=${currentPage}&size=${this.state.categoriesPerPage}`)
+        axios.get(`http://localhost:7001/api/category/get/all/list?page=${currentPage}&size=${this.state.categoriesPerPage}`)
             .then(response => response.data)
             .then((data) => {
                 this.setState({categories: data.categories, totalPages: data.totalPages, totalElements: data.totalElements, currentPage: data.number + 1})

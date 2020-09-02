@@ -21,7 +21,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAll(int page, int size) {
+    public List<Category> getAll() {
+        return categoryDAO.findAll();
+    }
+
+    @Override
+    public List<Category> getAllPagination(int page, int size) {
         List<Category> categories = categoryDAO.findAll();
         int from = page * size;
         int to = from + size;
