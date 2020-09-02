@@ -21,8 +21,14 @@ public class CategoryRestControllerApi {
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public CategoryList getAllCategories(@RequestParam Integer page, @RequestParam Integer size) {
-        List<Category> categories = categoryService.getAll(page, size);
+    public List<Category> getAllCategories() {
+        return categoryService.getAll();
+    }
+
+    @RequestMapping(value = "/get/all/list", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryList getAllCategoriesPagination(@RequestParam Integer page, @RequestParam Integer size) {
+        List<Category> categories = categoryService.getAllPagination(page, size);
         CategoryList categoryList = categoryService.getCountForCategory(size);
         categoryList.setCategories(categories);
         categoryList.setNumber(page);
