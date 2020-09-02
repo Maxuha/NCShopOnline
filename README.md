@@ -21,4 +21,4 @@
 10. Перейти в директорию user_projects/domains/base_domain/bin
 11. Остановить сервер ./stopWebLogic.sh
 12. Запустить сервер ./startWebLogic.sh (чтобы применить data source)
-8. Перейти по адресу - http://localhost:7001/index.html
+8. Перейти по адресу http://localhost:7001/index.html
