@@ -58,9 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryList getCountForCategory(int size) {
         CategoryList categoryList =  categoryDAO.getCountForCategory();
-        int totalPages = (int) Math.ceil(categoryList.getTotalElements() / (double)size);
-        categoryList.setTotalPages(totalPages);
-        return categoryList;
+        return getCalculateCountCategories(categoryList, size);
     }
 
     private Category getValidCategory(Category category) {
@@ -74,5 +72,11 @@ public class CategoryServiceImpl implements CategoryService {
         int to = from + size;
         to = Math.min(to, categories.size());
         return categories.subList(from, to);
+    }
+
+    private CategoryList getCalculateCountCategories(CategoryList categoryList, int size) {
+        int totalPages = (int) Math.ceil(categoryList.getTotalElements() / (double)size);
+        categoryList.setTotalPages(totalPages);
+        return categoryList;
     }
 }
