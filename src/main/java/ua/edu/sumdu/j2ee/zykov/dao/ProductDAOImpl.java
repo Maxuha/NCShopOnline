@@ -79,7 +79,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public ProductList getCountForProducts() {
+    public ProductList getProductListWithTotalElements() {
         String sql = "SELECT count(*) FROM product";
         return jdbcTemplate.queryForObject(sql, new ProductListMapper());
     }

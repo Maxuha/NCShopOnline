@@ -6,12 +6,11 @@ import ua.edu.sumdu.j2ee.zykov.model.ProductList;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getProductAll(int page, int size, String sortBy, String sortDir);
+    ProductList getProductAllPagination(int page, int size, String sortBy, String sortDir);
     List<Product> getProductByTitleOrShipper(String searchText);
     List<Product> getProductByCategoryId(int categoryId);
     Product getProductById(int id);
     Product addProduct(Product product);
     Product updateProduct(Product product);
     Product deleteProduct(Product product);
-    ProductList getCountForProduct(int size);
 }

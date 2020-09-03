@@ -13,5 +13,5 @@ public interface ProductDAO {
     Product save(Product product);
     Product update(Product product);
     Product delete(Product product);
-    ProductList getCountForProducts();
+    ProductList getProductListWithTotalElements();
 }

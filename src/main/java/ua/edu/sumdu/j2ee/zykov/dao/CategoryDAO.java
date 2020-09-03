@@ -12,5 +12,5 @@ public interface CategoryDAO {
     Category save(Category category);
     Category update(Category category);
     Category delete(Category category);
-    CategoryList getCountForCategory();
+    CategoryList getCategoryListWithTotalElements();
 }

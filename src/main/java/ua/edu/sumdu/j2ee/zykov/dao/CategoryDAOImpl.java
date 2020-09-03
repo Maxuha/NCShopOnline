@@ -75,7 +75,7 @@ public class CategoryDAOImpl implements CategoryDAO {
     }
 
     @Override
-    public CategoryList getCountForCategory() {
+    public CategoryList getCategoryListWithTotalElements() {
         String sql = "SELECT count(*) FROM category";
         return jdbcTemplate.queryForObject(sql, new CategoryListMapper());
     }
