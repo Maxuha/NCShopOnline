@@ -6,7 +6,6 @@ import ua.edu.sumdu.j2ee.zykov.dao.ImageDAO;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
-import ua.edu.sumdu.j2ee.zykov.model.Product;
 
 import java.util.List;
 
@@ -28,10 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllPagination(int page, int size) {
         List<Category> categories = categoryDAO.findAll();
-        int from = page * size;
-        int to = from + size;
-        to = Math.min(to, categories.size());
-        return categories.subList(from, to);
+        return getCategoryFromRange(categories, page, size);
     }
 
     @Override
@@ -71,5 +67,12 @@ public class CategoryServiceImpl implements CategoryService {
         Image image = imageDAO.save(category.getImage() != null ? category.getImage() : new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"));
         category.setImage(image);
         return category;
+    }
+
+    private List<Category> getCategoryFromRange(List<Category> categories, int page, int size) {
+        int from = page * size;
+        int to = from + size;
+        to = Math.min(to, categories.size());
+        return categories.subList(from, to);
     }
 }
