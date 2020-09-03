@@ -25,13 +25,10 @@ public class ProductRestControllerApi {
     @RequestMapping(value = "/get/all", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public ProductList getAllProducts(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String sortBy, @RequestParam String sortDir) {
-        List<Product> products = productService.getProductAll(page, size, sortBy, sortDir);
-        for (Product product : products) {
+        ProductList productList = productService.getProductAllPagination(page, size, sortBy, sortDir);
+        for (Product product : productList.getProducts()) {
             product.setCategory(categoryService.getById(product.getCategory().getId()));
         }
-        ProductList productList = productService.getCountForProduct(size);
-        productList.setProducts(products);
-        productList.setNumber(page);
         return productList;
     }
 

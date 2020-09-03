@@ -25,7 +25,6 @@ public class NCUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        System.out.println("work");
         User user = userDAO.findByUserName(name);
 
         Set<Role> roles = new HashSet<>(userHasRoleDAO.getRoleByUserId(user.getId()));

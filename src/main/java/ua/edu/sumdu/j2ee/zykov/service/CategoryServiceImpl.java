@@ -6,7 +6,7 @@ import ua.edu.sumdu.j2ee.zykov.dao.ImageDAO;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
-import ua.edu.sumdu.j2ee.zykov.model.Product;
+import ua.edu.sumdu.j2ee.zykov.utils.CalculatePagination;
 
 import java.util.List;
 
@@ -26,12 +26,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAllPagination(int page, int size) {
+    public CategoryList getAllPagination(int page, int size) {
         List<Category> categories = categoryDAO.findAll();
-        int from = page * size;
-        int to = from + size;
-        to = Math.min(to, categories.size());
-        return categories.subList(from, to);
+        CategoryList categoryList = getCategoryList(size);
+        categoryList.setCategories(getCategoriesFromRange(categories, page, size));
+        categoryList.setNumber(page);
+        return categoryList;
     }
 
     @Override
@@ -59,17 +59,23 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDAO.delete(category);
     }
 
-    @Override
-    public CategoryList getCountForCategory(int size) {
-        CategoryList categoryList =  categoryDAO.getCountForCategory();
-        int totalPages = (int) Math.ceil(categoryList.getTotalElements() / (double)size);
-        categoryList.setTotalPages(totalPages);
-        return categoryList;
-    }
-
     private Category getValidCategory(Category category) {
         Image image = imageDAO.save(category.getImage() != null ? category.getImage() : new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWCN9Acq8fXUM4G4e3c9l--1RWCkVX9folw&usqp=CAU"));
         category.setImage(image);
         return category;
+    }
+
+    private CategoryList getCategoryList(int size) {
+        CategoryList categoryList = categoryDAO.getCategoryListWithTotalElements();
+        int totalPages = CalculatePagination.calculateTotalPagesForEntityList(categoryList, size);
+        categoryList.setTotalPages(totalPages);
+        return categoryList;
+    }
+
+    private List<Category> getCategoriesFromRange(List<Category> categories, int page, int size) {
+        int from = page * size;
+        int to = from + size;
+        to = Math.min(to, categories.size());
+        return categories.subList(from, to);
     }
 }

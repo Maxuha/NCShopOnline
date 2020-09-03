@@ -11,9 +11,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryList {
+public class CategoryList extends EntityList {
     private List<Category> categories;
-    private Integer totalPages;
-    private Integer totalElements;
-    private Integer number;
 }
