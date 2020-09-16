@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2ee.zykov.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import ua.edu.sumdu.j2ee.zykov.service.UserService;
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
 public class HomeController {
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final UserService userService;
     private final CustomerService customerService;
     private final ShipperService shipperService;
@@ -27,47 +30,41 @@ public class HomeController {
         this.userHasRoleService = userHasRoleService;
     }
 
-    /*@RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public String start() {
-        return "index";
-    }
-
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public String index() {
-        return "index";
-    }*/
-
     @RequestMapping(value = "/403")
     @ResponseStatus(HttpStatus.OK)
     public String error403() {
+        logger.info("Open error page");
         return "403";
     }
 
     @RequestMapping(value = "/logout")
     @ResponseStatus(HttpStatus.OK)
     public String logout() {
+        logger.info("Open logout page");
         return "logout";
     }
 
     @RequestMapping(value = "/register/customer")
     @ResponseStatus(HttpStatus.OK)
     public String registerCustomer(@RequestBody User user, @RequestHeader String info) {
+        logger.info("Request to register new customer {}", user);
         user = userService.addUser(user);
         userHasRoleService.addUserHasRole(user, Role.ROLE_CUSTOMER);
         Customer customer = new Customer(user, info);
         customerService.addCustomer(customer);
+        logger.info("Register success! Redirect to home page");
         return "redirect:/index.html";
     }
 
     @RequestMapping(value = "/register/shipper")
     @ResponseStatus(HttpStatus.OK)
     public String registerShipper(@RequestBody User user, @RequestHeader String info) {
+        logger.info("Request to register new shipper {}", user);
         user = userService.addUser(user);
         userHasRoleService.addUserHasRole(user, Role.ROLE_SHIPPER);
         Shipper shipper = new Shipper(user, info);
         shipperService.addShipper(shipper);
+        logger.info("Register success! Redirect to home page");
         return "redirect:/index.html";
     }
 }
