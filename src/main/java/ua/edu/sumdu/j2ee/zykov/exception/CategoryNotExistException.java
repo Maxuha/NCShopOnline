@@ -1,11 +1,11 @@
 package ua.edu.sumdu.j2ee.zykov.exception;
 
 public class CategoryNotExistException extends NotExistException {
-    public CategoryNotExistException(Long categoryId) {
+    public CategoryNotExistException(Integer categoryId) {
         super(String.format("Category %d not exist", categoryId));
     }
 
-    public CategoryNotExistException(Long categoryId, Throwable cause) {
+    public CategoryNotExistException(Integer categoryId, Throwable cause) {
         super(String.format("Category %d not exist", categoryId), cause);
     }
 }
