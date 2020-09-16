@@ -1,11 +1,13 @@
 package ua.edu.sumdu.j2ee.zykov.exception;
 
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
+
 public class ImageNotExistException extends NotExistException {
-    public ImageNotExistException(Integer imageId) {
-        super(String.format("Image %d not exist", imageId));
+    public ImageNotExistException(EntityField entityField) {
+        super(String.format("Image with $s %d not exist", entityField.getField(), entityField.getId()));
     }
 
-    public ImageNotExistException(Integer imageId, Throwable cause) {
-        super(String.format("Image %d not exist", imageId), cause);
+    public ImageNotExistException(EntityField entityField, Throwable cause) {
+        super(String.format("Image with $s %d not exist", entityField.getField(), entityField.getId()), cause);
     }
 }

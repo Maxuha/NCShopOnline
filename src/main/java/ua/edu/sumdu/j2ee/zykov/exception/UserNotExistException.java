@@ -1,11 +1,13 @@
 package ua.edu.sumdu.j2ee.zykov.exception;
 
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
+
 public class UserNotExistException extends NotExistException {
-    public UserNotExistException(Integer userId) {
-        super(String.format("User %d not exist", userId));
+    public UserNotExistException(EntityField entityField) {
+        super(String.format("User %s %d not exist", entityField.getField(), entityField.getId()));
     }
 
-    public UserNotExistException(Integer userId, Throwable cause) {
-        super(String.format("User %d not exist", userId), cause);
+    public UserNotExistException(EntityField entityField, Throwable cause) {
+        super(String.format("User %s %d not exist", entityField.getField(), entityField.getId()), cause);
     }
 }

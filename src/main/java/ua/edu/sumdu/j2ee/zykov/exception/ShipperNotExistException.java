@@ -1,11 +1,13 @@
 package ua.edu.sumdu.j2ee.zykov.exception;
 
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
+
 public class ShipperNotExistException extends NotExistException {
-    public ShipperNotExistException(Integer shipperId) {
-        super(String.format("Product %d not exist", shipperId));
+    public ShipperNotExistException(EntityField entityField) {
+        super(String.format("Product with %s %d not exist", entityField.getField(), entityField.getId()));
     }
 
-    public ShipperNotExistException(Integer shipperId, Throwable cause) {
-        super(String.format("Product %d not exist", shipperId), cause);
+    public ShipperNotExistException(EntityField entityField, Throwable cause) {
+        super(String.format("Product with %s %d not exist", entityField.getField(), entityField.getId()), cause);
     }
 }

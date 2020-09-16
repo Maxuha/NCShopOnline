@@ -1,11 +1,13 @@
 package ua.edu.sumdu.j2ee.zykov.exception;
 
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
+
 public class ProductNotExistException extends NotExistException {
-    public ProductNotExistException(Integer productId) {
-        super(String.format("Product %d not exist", productId));
+    public ProductNotExistException(EntityField entityField) {
+        super(String.format("Product with %s %d not exist", entityField.getField(), entityField.getId()));
     }
 
-    public ProductNotExistException(Integer productId, Throwable cause) {
-        super(String.format("Product %d not exist", productId), cause);
+    public ProductNotExistException(EntityField entityField, Throwable cause) {
+        super(String.format("Product with %s %d not exist", entityField.getField(), entityField.getId()), cause);
     }
 }
