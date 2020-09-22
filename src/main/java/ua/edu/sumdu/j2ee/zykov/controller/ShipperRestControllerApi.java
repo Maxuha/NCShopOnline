@@ -39,6 +39,7 @@ public class ShipperRestControllerApi {
             responseEntity = ResponseEntity.ok().body(shipperService.getShipperById(id));
         } catch (ShipperNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Shipper by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -62,6 +63,7 @@ public class ShipperRestControllerApi {
             responseEntity = ResponseEntity.ok().body(shipperService.updateShipper(shipperFromDb));
         } catch (ShipperNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Shipper by id {} not exist", shipper.getUser().getId());
         }
         return responseEntity;
     }
@@ -76,6 +78,7 @@ public class ShipperRestControllerApi {
             responseEntity = ResponseEntity.ok().body(shipperService.deleteShipper(shipperFromDb));
         } catch (ShipperNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Shipper by id {} not exist", id);
         }
         return responseEntity;
     }

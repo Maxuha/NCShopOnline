@@ -39,6 +39,7 @@ public class ImageRestControllerApi {
             responseEntity = ResponseEntity.ok().body(imageService.getImageById(id));
         } catch (ImageNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Image by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -61,6 +62,7 @@ public class ImageRestControllerApi {
             responseEntity = ResponseEntity.ok().body(imageService.updateImage(imageFromDb));
         } catch (ImageNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Image by id {} not exist", image.getId());
         }
         return responseEntity;
     }
@@ -75,6 +77,7 @@ public class ImageRestControllerApi {
             responseEntity = ResponseEntity.ok().body(imageService.deleteImage(imageFromDb));
         } catch (ImageNotExistException e ) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Image by id {} not exist", id);
         }
         return responseEntity;
     }

@@ -39,6 +39,7 @@ public class OrderRestControllerApi {
             responseEntity = ResponseEntity.ok().body(orderService.getOrderById(id));
         } catch (OrderNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Order by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -76,6 +77,7 @@ public class OrderRestControllerApi {
             responseEntity = ResponseEntity.ok().body(orderService.updateOrder(orderFromDb));
         } catch (OrderNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Order by id {} not exist", order.getId());
         }
         return responseEntity;
     }
@@ -90,6 +92,7 @@ public class OrderRestControllerApi {
             responseEntity = ResponseEntity.ok().body(orderService.deleteOrder(orderFormDb));
         } catch (OrderNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Order by id {} not exist", id);
         }
         return responseEntity;
     }

@@ -47,6 +47,7 @@ public class CategoryRestControllerApi {
             responseEntity = ResponseEntity.ok().body(categoryService.getByParentId(parentId));
         } catch (CategoryNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Categories by parent {} not exist", parentId);
         }
         return responseEntity;
     }
@@ -60,6 +61,7 @@ public class CategoryRestControllerApi {
             responseEntity = ResponseEntity.ok().body(categoryService.getById(id));
         } catch (CategoryNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Categories by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -84,6 +86,7 @@ public class CategoryRestControllerApi {
             responseEntity = ResponseEntity.ok().body(categoryService.updateCategory(categoryFromDb));
         } catch (CategoryNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Category by id {} not exist", category.getId());
         }
         return responseEntity;
     }
@@ -98,6 +101,7 @@ public class CategoryRestControllerApi {
             responseEntity = ResponseEntity.ok().body(categoryService.deleteCategory(categoryFromDb));
         } catch (CategoryNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Category by id {} not exist", id);
         }
         return responseEntity;
     }

@@ -38,6 +38,7 @@ public class CustomerRestControllerApi {
             responseEntity = ResponseEntity.ok().body(customerService.getCustomerById(id));
         } catch (CustomerNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Customer by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -60,6 +61,7 @@ public class CustomerRestControllerApi {
             responseEntity = ResponseEntity.ok().body(customerService.updateCustomer(customerFromDb));
         } catch (CustomerNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Customer by id {} not exist", customer.getUser().getId());
         }
         return responseEntity;
     }
@@ -74,6 +76,7 @@ public class CustomerRestControllerApi {
             responseEntity = ResponseEntity.ok().body(customerService.deleteUCustomer(customerFromDb));
         } catch (CustomerNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Customer by id {} not exist", id);
         }
         return responseEntity;
     }

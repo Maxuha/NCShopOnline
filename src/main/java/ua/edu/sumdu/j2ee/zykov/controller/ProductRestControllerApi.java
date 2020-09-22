@@ -63,6 +63,7 @@ public class ProductRestControllerApi {
             responseEntity = ResponseEntity.ok().body(product);
         } catch (NotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Product by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -101,6 +102,7 @@ public class ProductRestControllerApi {
             responseEntity = ResponseEntity.ok().body(productService.updateProduct(productFromDb));
         } catch (ProductNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Product by id {} not exist", product.getId());
         }
         return responseEntity;
     }
@@ -115,6 +117,7 @@ public class ProductRestControllerApi {
             responseEntity = ResponseEntity.ok().body(productFromDb);
         } catch (ProductNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Product by id {} not exist", id);
         }
         return responseEntity;
     }

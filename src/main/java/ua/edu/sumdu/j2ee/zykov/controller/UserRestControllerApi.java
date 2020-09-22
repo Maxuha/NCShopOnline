@@ -38,6 +38,7 @@ public class UserRestControllerApi {
             responseEntity = ResponseEntity.ok().body(userService.getUserById(id));
         } catch (UserNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("User by id {} not exist", id);
         }
         return responseEntity;
     }
@@ -68,6 +69,7 @@ public class UserRestControllerApi {
             responseEntity = ResponseEntity.ok().body(userService.updateUser(userFromDb));
         } catch (UserNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("User by id {} not exist", user.getId());
         }
         return responseEntity;
     }
@@ -82,6 +84,7 @@ public class UserRestControllerApi {
             responseEntity = ResponseEntity.ok().body(userFromDb);
         } catch (UserNotExistException e) {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("User by id {} not exist", id);
         }
         return responseEntity;
     }
