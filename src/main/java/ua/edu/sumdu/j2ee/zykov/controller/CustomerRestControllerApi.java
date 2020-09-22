@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.exception.CustomerNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Customer;
 import ua.edu.sumdu.j2ee.zykov.service.CustomerService;
 
@@ -29,9 +31,15 @@ public class CustomerRestControllerApi {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Customer getByIdCustomer(@PathVariable int id) {
+    public ResponseEntity<?> getByIdCustomer(@PathVariable int id) {
         logger.info("Request to receive customer by id {}", id);
-        return customerService.getCustomerById(id);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = ResponseEntity.ok().body(customerService.getCustomerById(id));
+        } catch (CustomerNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -43,15 +51,30 @@ public class CustomerRestControllerApi {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Customer updateCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {
         logger.info("Request to update customer {}", customer);
-        return customerService.updateCustomer(customer);
+        ResponseEntity<?> responseEntity;
+        try {
+            Customer customerFromDb = customerService.getCustomerById(customer.getUser().getId());
+            customerFromDb.setFullName(customer.getFullName());
+            responseEntity = ResponseEntity.ok().body(customerService.updateCustomer(customerFromDb));
+        } catch (CustomerNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Customer removeUser(@RequestBody Customer customer) {
-        logger.info("Request to delete customer {}", customer);
-        return customerService.deleteUCustomer(customer);
+    public ResponseEntity<?> removeUser(@PathVariable Integer id) {
+        logger.info("Request to delete customer {}", id);
+        ResponseEntity<?> responseEntity;
+        try {
+            Customer customerFromDb = customerService.getCustomerById(id);
+            responseEntity = ResponseEntity.ok().body(customerService.deleteUCustomer(customerFromDb));
+        } catch (CustomerNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 }

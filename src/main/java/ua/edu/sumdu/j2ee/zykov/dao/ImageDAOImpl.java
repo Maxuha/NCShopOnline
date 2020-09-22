@@ -1,9 +1,12 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ua.edu.sumdu.j2ee.zykov.exception.ImageNotExistException;
 import ua.edu.sumdu.j2ee.zykov.mapper.ImageMapper;
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 
 import java.sql.PreparedStatement;
@@ -26,9 +29,14 @@ public class ImageDAOImpl implements ImageDAO {
     }
 
     @Override
-    public Image findById(int id) {
+    public Image findById(int id) throws ImageNotExistException {
+        final String field = "id";
         String sql = "SELECT * FROM image WHERE id = ?;";
-        return jdbcTemplate.queryForObject(sql, new ImageMapper(), id);
+        try {
+            return jdbcTemplate.queryForObject(sql, new ImageMapper(), id);
+        } catch (DataAccessException e) {
+            throw new ImageNotExistException(new EntityField(id, field), e);
+        }
     }
 
     @Override

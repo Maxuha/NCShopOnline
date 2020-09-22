@@ -1,9 +1,12 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ua.edu.sumdu.j2ee.zykov.exception.OrderNotExistException;
 import ua.edu.sumdu.j2ee.zykov.mapper.OrderMapper;
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
 import ua.edu.sumdu.j2ee.zykov.model.Order;
 
 import java.sql.PreparedStatement;
@@ -28,18 +31,24 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order findById(int id) {
+    public Order findById(int id) throws OrderNotExistException {
         String query = "SELECT * FROM \"order\" o LEFT JOIN customer c on o.user_id = c.user_id LEFT JOIN \"user\" u on o.user_id = u.id WHERE o.id = ?;";
-        return jdbcTemplate.queryForObject(query, new OrderMapper(), id);
+        final String field = "id";
+        try {
+            return jdbcTemplate.queryForObject(query, new OrderMapper(), id);
+        } catch (DataAccessException e) {
+            throw new OrderNotExistException(new EntityField(id, field), e);
+        }
     }
 
     @Override
-    public Order findByProcessedAndCustomerId(int customerId) {
+    public Order findByProcessedAndCustomerId(int customerId) throws OrderNotExistException {
         String query = "SELECT * FROM \"order\" o LEFT JOIN customer c on o.user_id = c.user_id LEFT JOIN \"user\" u on o.user_id = u.id WHERE o.is_processed = ? AND o.user_id = ?;";
+        final String field = "customer id";
         try {
             return jdbcTemplate.queryForObject(query, new OrderMapper(), false, customerId);
-        } catch (Exception e) {
-            return null;
+        } catch (DataAccessException e) {
+            throw new OrderNotExistException(new EntityField(customerId, field), e);
         }
     }
 

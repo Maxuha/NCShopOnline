@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.exception.CategoryNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.service.CategoryService;
@@ -38,16 +40,28 @@ public class CategoryRestControllerApi {
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public List<Category> getCategoriesByParentId(@RequestParam Integer parentId) {
+    public ResponseEntity<?> getCategoriesByParentId(@RequestParam Integer parentId) {
         logger.info("Request to receive categories by parent {}", parentId);
-        return categoryService.getByParentId(parentId);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = ResponseEntity.ok().body(categoryService.getByParentId(parentId));
+        } catch (CategoryNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Category getByIdCategory(@PathVariable int id) {
+    public ResponseEntity<?> getByIdCategory(@PathVariable int id) {
         logger.info("Request to receive category by id {}", id);
-        return categoryService.getById(id);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = ResponseEntity.ok().body(categoryService.getById(id));
+        } catch (CategoryNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -59,15 +73,32 @@ public class CategoryRestControllerApi {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Category updateCategory(@RequestBody Category category) {
+    public ResponseEntity<?> updateCategory(@RequestBody Category category) {
         logger.info("Request to update category {}", category);
-        return categoryService.updateCategory(category);
+        ResponseEntity<?> responseEntity;
+        try {
+            Category categoryFromDb = categoryService.getById(category.getId());
+            categoryFromDb.setTitle(category.getTitle());
+            categoryFromDb.setImage(category.getImage());
+            categoryFromDb.setParent(category.getParent());
+            responseEntity = ResponseEntity.ok().body(categoryService.updateCategory(categoryFromDb));
+        } catch (CategoryNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Category removeCategory(@RequestBody Category category) {
-        logger.info("Request to delete category {}", category);
-        return categoryService.deleteCategory(category);
+    public ResponseEntity<?>  removeCategory(@PathVariable Integer id) {
+        logger.info("Request to delete category {}", id);
+        ResponseEntity<?> responseEntity;
+        try {
+            Category categoryFromDb = categoryService.getById(id);
+            responseEntity = ResponseEntity.ok().body(categoryService.deleteCategory(categoryFromDb));
+        } catch (CategoryNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 }

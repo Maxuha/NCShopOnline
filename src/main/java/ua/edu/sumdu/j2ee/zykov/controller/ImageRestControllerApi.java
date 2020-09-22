@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.exception.ImageNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 import ua.edu.sumdu.j2ee.zykov.service.ImageService;
 
@@ -30,9 +32,15 @@ public class ImageRestControllerApi {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Image getByIdImage(@PathVariable int id) {
+    public ResponseEntity<?> getByIdImage(@PathVariable int id) {
         logger.info("Request to receive image by id {}", id);
-        return imageService.getImageById(id);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = ResponseEntity.ok().body(imageService.getImageById(id));
+        } catch (ImageNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -44,15 +52,30 @@ public class ImageRestControllerApi {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Image updateImage(@RequestBody Image image) {
+    public ResponseEntity<?> updateImage(@RequestBody Image image) {
         logger.info("Request to update image {}", image);
-        return imageService.updateImage(image);
+        ResponseEntity<?> responseEntity;
+        try {
+            Image imageFromDb = imageService.getImageById(image.getId());
+            imageFromDb.setImage(image.getImage());
+            responseEntity = ResponseEntity.ok().body(imageService.updateImage(imageFromDb));
+        } catch (ImageNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Image removeImage(@RequestBody Image image) {
-        logger.info("Request to delete image {}", image);
-        return imageService.deleteImage(image);
+    public ResponseEntity<?> removeImage(@PathVariable Integer id) {
+        logger.info("Request to delete image {}", id);
+        ResponseEntity<?> responseEntity;
+        try {
+            Image imageFromDb = imageService.getImageById(id);
+            responseEntity = ResponseEntity.ok().body(imageService.deleteImage(imageFromDb));
+        } catch (ImageNotExistException e ) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 }

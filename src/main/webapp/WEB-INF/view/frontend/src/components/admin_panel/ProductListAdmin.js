@@ -53,7 +53,7 @@ export default class ProductListAdmin extends Component {
     }
 
     deleteProduct = (product) => {
-        axios.delete("http://localhost:7001/api/product/remove", {data: product})
+        axios.delete(`http://localhost:7001/api/product/remove/${product.id}`)
             .then(response => {
                 if (response.data != null) {
                     this.setState({"show":true});

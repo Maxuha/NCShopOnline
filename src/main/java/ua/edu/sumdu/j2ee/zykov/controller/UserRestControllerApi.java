@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.exception.UserNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 import ua.edu.sumdu.j2ee.zykov.service.UserService;
 
@@ -29,9 +31,15 @@ public class UserRestControllerApi {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public User getByIdUser(@PathVariable int id) {
+    public ResponseEntity<?> getByIdUser(@PathVariable int id) {
         logger.info("Request to receive user by id {}", id);
-        return userService.getUserById(id);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = ResponseEntity.ok().body(userService.getUserById(id));
+        } catch (UserNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -50,16 +58,32 @@ public class UserRestControllerApi {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@RequestBody User user) {
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
         logger.info("Request to update user {}", user);
-        return userService.updateUser(user);
+        ResponseEntity<?> responseEntity;
+        try {
+            User userFromDb = userService.getUserById(user.getId());
+            userFromDb.setUserName(user.getUserName());
+            userFromDb.setPassword(user.getPassword());
+            responseEntity = ResponseEntity.ok().body(userService.updateUser(userFromDb));
+        } catch (UserNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public User removeUser(@RequestBody User user) {
-        logger.info("Request to remove user {}", user);
-        return userService.deleteUser(user);
+    public ResponseEntity<?> removeUser(@PathVariable Integer id) {
+        logger.info("Request to remove user {}", id);
+        ResponseEntity<?> responseEntity;
+        try {
+            User userFromDb = userService.getUserById(id);
+            responseEntity = ResponseEntity.ok().body(userFromDb);
+        } catch (UserNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
 }

@@ -31,7 +31,7 @@ export default class CategoryList extends Component {
     }
 
     deleteCategory = (category) => {
-        axios.delete("http://localhost:7001/api/category/remove", {data: category})
+        axios.delete(`http://localhost:7001/api/category/remove/${category.id}`)
             .then(response => {
                 if (response.data != null) {
                     this.setState({"show":true});

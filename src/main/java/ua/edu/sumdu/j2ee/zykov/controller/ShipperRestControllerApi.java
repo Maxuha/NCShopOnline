@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.exception.ShipperNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Shipper;
 import ua.edu.sumdu.j2ee.zykov.service.ShipperService;
 
@@ -30,9 +32,15 @@ public class ShipperRestControllerApi {
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Shipper getByIdShipper(@PathVariable int id) {
+    public ResponseEntity<?> getByIdShipper(@PathVariable int id) {
         logger.info("Request to receive shipper by id {}", id);
-        return shipperService.getShipperById(id);
+        ResponseEntity<?> responseEntity;
+        try {
+            responseEntity = ResponseEntity.ok().body(shipperService.getShipperById(id));
+        } catch (ShipperNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
@@ -44,15 +52,31 @@ public class ShipperRestControllerApi {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Shipper updateShipper(@RequestBody Shipper shipper) {
+    public ResponseEntity<?> updateShipper(@RequestBody Shipper shipper) {
         logger.info("Request to update shipper {}", shipper);
-        return shipperService.updateShipper(shipper);
+        ResponseEntity<?> responseEntity;
+        try {
+            Shipper shipperFromDb = shipperService.getShipperById(shipper.getUser().getId());
+            shipperFromDb.setCompanyName(shipper.getCompanyName());
+            shipperFromDb.setUser(shipper.getUser());
+            responseEntity = ResponseEntity.ok().body(shipperService.updateShipper(shipperFromDb));
+        } catch (ShipperNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     @ResponseStatus(HttpStatus.OK)
-    public Shipper removeUser(@RequestBody Shipper shipper) {
-        logger.info("Request to remove shipper {}", shipper);
-        return shipperService.deleteShipper(shipper);
+    public ResponseEntity<?> removeUser(@PathVariable Integer id) {
+        logger.info("Request to remove shipper {}", id);
+        ResponseEntity<?> responseEntity;
+        try {
+            Shipper shipperFromDb = shipperService.getShipperById(id);
+            responseEntity = ResponseEntity.ok().body(shipperService.deleteShipper(shipperFromDb));
+        } catch (ShipperNotExistException e) {
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return responseEntity;
     }
 }

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ua.edu.sumdu.j2ee.zykov.exception.CategoryNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.ImageToProduct;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
@@ -65,13 +66,18 @@ public class ImageToProductRestControllerApi {
 
     private List<ImageToProduct> getImageToProducts(List<ImageToProduct> imageToProducts) {
         Product product;
-        Category category;
         for (ImageToProduct imageToProduct : imageToProducts) {
             product = imageToProduct.getProduct();
-            category = product.getCategory();
-            category = categoryService.getById(category.getId());
-            product.setCategory(category);
+            product.setCategory(getCategory(product.getCategory().getId()));
         }
         return imageToProducts;
+    }
+
+    private Category getCategory(Integer categoryId) {
+        try {
+            return categoryService.getById(categoryId);
+        } catch (CategoryNotExistException e) {
+            return null;
+        }
     }
 }
