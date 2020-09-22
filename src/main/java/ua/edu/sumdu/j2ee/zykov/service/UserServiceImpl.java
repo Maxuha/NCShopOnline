@@ -3,6 +3,7 @@ package ua.edu.sumdu.j2ee.zykov.service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.UserDAO;
+import ua.edu.sumdu.j2ee.zykov.exception.UserNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(int id) throws UserNotExistException {
         return userDAO.findById(id);
     }
 

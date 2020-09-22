@@ -1,11 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ua.edu.sumdu.j2ee.zykov.exception.UserNotExistException;
 import ua.edu.sumdu.j2ee.zykov.mapper.UserMapper;
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
 import ua.edu.sumdu.j2ee.zykov.model.User;
 
 import java.sql.PreparedStatement;
@@ -29,9 +32,14 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User findById(int id) {
+    public User findById(int id) throws UserNotExistException {
         String query = "SELECT * FROM \"user\" WHERE id = ?";
-        return jdbcTemplate.queryForObject(query, new UserMapper(), id);
+        final String field = "id";
+        try {
+            return jdbcTemplate.queryForObject(query, new UserMapper(), id);
+        } catch (DataAccessException e) {
+            throw new UserNotExistException(new EntityField(id, field), e);
+        }
     }
 
     @Override

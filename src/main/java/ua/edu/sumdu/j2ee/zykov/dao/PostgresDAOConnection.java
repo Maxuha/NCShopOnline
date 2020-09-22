@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -7,6 +9,7 @@ import java.sql.*;
 
 @Repository
 public class PostgresDAOConnection extends DAOConnection {
+    private static final Logger logger = LoggerFactory.getLogger(PostgresDAOConnection.class);
     private final DataSource dataSource;
 
     public PostgresDAOConnection(DataSource dataSource) {
@@ -34,10 +37,10 @@ public class PostgresDAOConnection extends DAOConnection {
         try {
             connection = dataSource.getConnection();
             if (!connection.isClosed()) {
-                System.out.println("Connection Successful!");
+                logger.info("Connection Successful!");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
         }
         return connection;
     }
@@ -52,9 +55,9 @@ public class PostgresDAOConnection extends DAOConnection {
             if (statement != null) {
                 statement.close();
             }
-            System.out.println("Connection was closed!");
+            logger.info("Connection was closed!");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2ee.zykov.service;
 
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.CustomerDAO;
+import ua.edu.sumdu.j2ee.zykov.exception.CustomerNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Customer;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(int id) {
+    public Customer getCustomerById(int id) throws CustomerNotExistException {
         return customerDAO.findById(id);
     }
 

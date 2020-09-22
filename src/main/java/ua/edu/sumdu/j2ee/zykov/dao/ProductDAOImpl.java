@@ -1,11 +1,14 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import ua.edu.sumdu.j2ee.zykov.exception.ProductNotExistException;
 import ua.edu.sumdu.j2ee.zykov.mapper.ImageMapper;
 import ua.edu.sumdu.j2ee.zykov.mapper.ProductListMapper;
 import ua.edu.sumdu.j2ee.zykov.mapper.ProductMapper;
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
 import ua.edu.sumdu.j2ee.zykov.model.ProductList;
@@ -41,9 +44,14 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public Product findById(int id) {
+    public Product findById(int id) throws ProductNotExistException {
         String sql = "SELECT * FROM product LEFT JOIN category c on product.category_id = c.id LEFT JOIN shipper s on product.shipper_id = s.user_id LEFT JOIN image i on c.image_id = i.id LEFT JOIN \"user\" u on s.user_id = u.id WHERE product.id = ?;";
-        return jdbcTemplate.queryForObject(sql, new ProductMapper(), id);
+        String field = "id";
+        try {
+            return jdbcTemplate.queryForObject(sql, new ProductMapper(), id);
+        } catch (DataAccessException e) {
+            throw new ProductNotExistException(new EntityField(id, field), e);
+        }
     }
 
     @Override

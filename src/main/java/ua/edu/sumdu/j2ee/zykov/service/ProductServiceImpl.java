@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2ee.zykov.service;
 
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.ProductDAO;
+import ua.edu.sumdu.j2ee.zykov.exception.ProductNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Category;
 import ua.edu.sumdu.j2ee.zykov.model.CategoryList;
 import ua.edu.sumdu.j2ee.zykov.model.Product;
@@ -38,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(int id) {
+    public Product getProductById(int id) throws ProductNotExistException {
         return productDAO.findById(id);
     }
 

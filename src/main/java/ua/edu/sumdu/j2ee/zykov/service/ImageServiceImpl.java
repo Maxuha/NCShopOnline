@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2ee.zykov.service;
 
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.ImageDAO;
+import ua.edu.sumdu.j2ee.zykov.exception.ImageNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Image;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image getImageById(int id) {
+    public Image getImageById(int id) throws ImageNotExistException {
         return imageDAO.findById(id);
     }
 

@@ -2,6 +2,8 @@ package ua.edu.sumdu.j2ee.zykov.service;
 
 import org.springframework.stereotype.Service;
 import ua.edu.sumdu.j2ee.zykov.dao.ShipperDAO;
+import ua.edu.sumdu.j2ee.zykov.exception.CustomerNotExistException;
+import ua.edu.sumdu.j2ee.zykov.exception.ShipperNotExistException;
 import ua.edu.sumdu.j2ee.zykov.model.Shipper;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class ShipperServiceImpl implements ShipperService {
     }
 
     @Override
-    public Shipper getShipperById(int id) {
+    public Shipper getShipperById(int id) throws ShipperNotExistException {
         return shipperDAO.findById(id);
     }
 

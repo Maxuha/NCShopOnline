@@ -1,9 +1,12 @@
 package ua.edu.sumdu.j2ee.zykov.dao;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ua.edu.sumdu.j2ee.zykov.exception.CustomerNotExistException;
 import ua.edu.sumdu.j2ee.zykov.mapper.CustomerMapper;
 import ua.edu.sumdu.j2ee.zykov.model.Customer;
+import ua.edu.sumdu.j2ee.zykov.model.EntityField;
 
 import java.util.List;
 
@@ -22,9 +25,14 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public Customer findById(int id) {
+    public Customer findById(int id) throws CustomerNotExistException {
         String sql = "SELECT * FROM customer LEFT JOIN \"user\" ON customer.user_id = \"user\".id WHERE user_id = ?;";
-        return jdbcTemplate.queryForObject(sql, new CustomerMapper(), id);
+        String field = "id";
+        try {
+            return jdbcTemplate.queryForObject(sql, new CustomerMapper(), id);
+        } catch (DataAccessException e) {
+            throw new CustomerNotExistException(new EntityField(id, field), e);
+        }
     }
 
     @Override
